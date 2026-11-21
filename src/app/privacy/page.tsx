@@ -13,7 +13,7 @@ export default function PrivacyPage() {
         <section className="space-y-2">
           <h2 className="text-base font-bold text-foreground">1. Commitment to Data Privacy</h2>
           <p>
-            At RESUMIFY, we believe your resume, employment history, and personal contact details belong strictly to you. We do not sell or monetize candidate data to third-party data brokers or recruitment spam networks.
+            At CVNest, we believe your resume, employment history, and personal contact details belong strictly to you. We do not sell or monetize candidate data to third-party data brokers or recruitment spam networks.
           </p>
         </section>
 

@@ -34,7 +34,7 @@ export default function SignupPage() {
             <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center mx-auto shadow-md">
               <FileText className="w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Create your RESUMIFY Account</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Create your CVNest Account</h1>
             <p className="text-xs text-muted-foreground">Start building ATS-optimized resumes and portfolio links.</p>
           </div>
 

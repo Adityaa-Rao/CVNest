@@ -83,7 +83,7 @@ export default function PublicResumePage() {
           <div className="w-7 h-7 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs">
             <FileText className="w-3.5 h-3.5" />
           </div>
-          <span className="font-bold text-sm tracking-tight">RESUMIFY Profile</span>
+          <span className="font-bold text-sm tracking-tight">CVNest Profile</span>
         </Link>
 
         <div className="flex items-center gap-2">

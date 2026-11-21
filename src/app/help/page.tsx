@@ -6,7 +6,7 @@ import { HelpCircle, ChevronDown } from "lucide-react";
 export default function HelpPage() {
   const faqs = [
     {
-      q: "How does RESUMIFY guarantee ATS readability?",
+      q: "How does CVNest guarantee ATS readability?",
       a: "Our ATS-friendly templates use clean, single-column hierarchical HTML elements without nested tables, floating graphics, or complex headers that trip up standard ATS parsers like Workday and Taleo.",
     },
     {
@@ -23,7 +23,7 @@ export default function HelpPage() {
     },
     {
       q: "What if I don't have a Gemini API key configured?",
-      a: "RESUMIFY includes a smart rule-based contextual generator that automatically crafts high-impact summaries and action-verb bullet points so you're never blocked.",
+      a: "CVNest includes a smart rule-based contextual generator that automatically crafts high-impact summaries and action-verb bullet points so you're never blocked.",
     },
   ];
 

@@ -2,10 +2,10 @@ import { ResumeData, CoverLetterData } from "@/types/resume";
 import { SAMPLE_FRESHER_RESUME, SAMPLE_EXPERIENCED_RESUME } from "@/constants/sample-resumes";
 import { generateId } from "@/lib/utils";
 
-const STORAGE_KEY_RESUMES = "resumify_resumes_v1";
-const STORAGE_KEY_ACTIVE_ID = "resumify_active_resume_id";
-const STORAGE_KEY_COVER_LETTERS = "resumify_cover_letters_v1";
-const STORAGE_KEY_USER_PREFS = "resumify_user_prefs_v1";
+const STORAGE_KEY_RESUMES = "cvnest_resumes_v1";
+const STORAGE_KEY_ACTIVE_ID = "cvnest_active_resume_id";
+const STORAGE_KEY_COVER_LETTERS = "cvnest_cover_letters_v1";
+const STORAGE_KEY_USER_PREFS = "cvnest_user_prefs_v1";
 
 export interface UserPreferences {
   theme: "light" | "dark" | "system";

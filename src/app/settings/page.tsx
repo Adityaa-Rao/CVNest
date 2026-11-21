@@ -44,7 +44,7 @@ export default function SettingsPage() {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
     const dl = document.createElement("a");
     dl.setAttribute("href", dataStr);
-    dl.setAttribute("download", `resumify_backup_${Date.now()}.json`);
+    dl.setAttribute("download", `cvnest_backup_${Date.now()}.json`);
     document.body.appendChild(dl);
     dl.click();
     dl.remove();

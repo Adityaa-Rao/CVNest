@@ -32,7 +32,7 @@ export default function LoginPage() {
             <div className="w-10 h-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center mx-auto shadow-md">
               <FileText className="w-5 h-5" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Sign in to RESUMIFY</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Sign in to CVNest</h1>
             <p className="text-xs text-muted-foreground">Access your saved resumes, tailored versions, and AI assistant.</p>
           </div>
 

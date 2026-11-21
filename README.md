@@ -1,8 +1,8 @@
-# RESUMIFY — AI-Powered Professional Resume Builder SaaS
+# CVNest — AI-Powered Professional Resume Builder SaaS
 
 > **Tagline**: *"Build Your Future, One Resume at a Time."*
 
-RESUMIFY is a complete, production-grade SaaS platform engineered for college students, BTech freshers, software developers, and experienced professionals worldwide.
+CVNest is a complete, production-grade SaaS platform engineered for college students, BTech freshers, software developers, and experienced professionals worldwide.
 
 ---
 
@@ -63,65 +63,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 npm run build
 npm run start
 ```
-
----
-
-## ⚙️ Environment Variables (Optional)
-
-Create a `.env.local` file based on `.env.example`:
-
-```env
-# Google Gemini API Key
-GEMINI_API_KEY=your-gemini-api-key
-
-# Supabase Authentication & Database
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# Payments (Razorpay for India / Stripe for Global)
-RAZORPAY_KEY_ID=your-razorpay-key-id
-RAZORPAY_KEY_SECRET=your-razorpay-key-secret
-STRIPE_SECRET_KEY=your-stripe-secret-key
-```
-
-*Note: If no API keys are provided, RESUMIFY runs seamlessly in local mode with full local storage persistence and built-in smart heuristic generators.*
-
----
-
-## 🗄️ Database Schema & Supabase RLS
-
-The database migration SQL file is located at:
-`supabase/migrations/20260301_resumify_schema.sql`
-
-Includes:
-- `profiles` table with user authentication linkage
-- `resumes` table with JSONB structure, template metadata, and slugs
-- `resume_versions` table for job-specific copies
-- `cover_letters` table
-- `subscriptions` table supporting Razorpay & Stripe
-- Complete Row Level Security (RLS) policies ensuring users only view and edit their own private records.
-
----
-
-## 📱 Application Routes
-
-| Route | Purpose |
-| :--- | :--- |
-| `/` | Landing page with live resume preview, interactive showcase, and FAQ |
-| `/templates` | 20+ template gallery with category filters and search |
-| `/templates/[id]` | Individual template detailed preview and one-click selection |
-| `/builder` | 3-panel resume editor with live synchronized canvas |
-| `/dashboard` | User dashboard, multi-version tracker, and resume importer |
-| `/ats-checker` | 0-100 ATS diagnostic score with section checklist |
-| `/job-matcher` | Job description keyword analyzer & version cloner |
-| `/cover-letter` | AI cover letter builder with live paper canvas |
-| `/login` | Authentication sign-in |
-| `/signup` | User registration with fresher specialization toggle |
-| `/forgot-password` | Password recovery |
-| `/pricing` | Freemium plan comparison with demo subscription activation |
-| `/settings` | Theme, paper size, and data privacy JSON export |
-| `/u/[username]` | Public online portfolio with privacy toggle |
-| `/privacy` | Platform data privacy policy |
-| `/terms` | Platform terms of service |
-| `/help` | Knowledge base and FAQ |

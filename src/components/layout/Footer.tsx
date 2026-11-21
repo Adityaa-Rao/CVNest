@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold shadow">
                 <FileText className="w-4 h-4" />
               </div>
-              <span className="font-bold text-lg text-foreground tracking-tight">RESUMIFY</span>
+              <span className="font-bold text-lg text-foreground tracking-tight">CVNest</span>
             </Link>
             <p className="mt-3 text-xs leading-relaxed max-w-sm">
               The AI-powered resume and career platform engineered for college students, BTech freshers, software engineers, and ambitious professionals worldwide.
@@ -71,7 +71,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {new Date().getFullYear()} RESUMIFY Inc. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CVNest Inc. All rights reserved.</p>
           <p className="flex items-center gap-1 text-muted-foreground">
             Crafted for job seekers with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> & AI precision.
           </p>

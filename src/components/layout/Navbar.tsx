@@ -66,7 +66,7 @@ export const Navbar: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-bold text-lg tracking-tight text-foreground flex items-center gap-1.5">
-              RESUMIFY
+              CVNest
               <span className="text-[10px] uppercase font-semibold px-1.5 py-0.2 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-md border border-indigo-500/20">
                 AI SaaS
               </span>

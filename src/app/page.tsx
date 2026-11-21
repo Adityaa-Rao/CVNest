@@ -34,7 +34,7 @@ export default function LandingPage() {
 
   const faqs = [
     {
-      q: "How does Resumify guarantee my resume passes ATS scanners?",
+      q: "How does CVNest guarantee my resume passes ATS scanners?",
       a: "Our ATS templates are designed to follow clean single-column hierarchies with standard section tags (Experience, Education, Skills) and zero unparseable graphical artifacts. This gives automated scanners like Workday and Taleo a frictionless 100% text read.",
     },
     {
@@ -43,7 +43,7 @@ export default function LandingPage() {
     },
     {
       q: "Can I download my resume as a real PDF?",
-      a: "Yes. RESUMIFY generates crystal-clear A4 and US Letter vector-like PDFs directly from your browser with zero ugly watermarks or clipped margins.",
+      a: "Yes. CVNest generates crystal-clear A4 and US Letter vector-like PDFs directly from your browser with zero ugly watermarks or clipped margins.",
     },
     {
       q: "Can I switch templates without losing entered data?",
@@ -183,7 +183,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto space-y-3 mb-14">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">Effortless Workflow</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">How Resumify Works</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">How CVNest Works</h2>
             <p className="text-sm text-muted-foreground">From blank canvas to an interview-ready resume in three seamless steps.</p>
           </div>
 
@@ -321,7 +321,7 @@ export default function LandingPage() {
                 No Work Experience? Land Your Dream Job or Internship.
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Traditional resume builders are built for people with 10 years of corporate history. Resumify includes specialized templates and sections designed specifically for BTech, Computer Science, and Engineering students.
+                Traditional resume builders are built for people with 10 years of corporate history. CVNest includes specialized templates and sections designed specifically for BTech, Computer Science, and Engineering students.
               </p>
 
               <div className="space-y-3 text-xs">
@@ -418,7 +418,7 @@ export default function LandingPage() {
             Ready to Build Your Winning Resume?
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Join thousands of college graduates, software engineers, and ambitious professionals who build clean, ATS-verified resumes with RESUMIFY.
+            Join thousands of college graduates, software engineers, and ambitious professionals who build clean, ATS-verified resumes with CVNest.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <Link

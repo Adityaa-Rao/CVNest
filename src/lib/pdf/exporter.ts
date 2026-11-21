@@ -15,7 +15,7 @@ export async function exportResumeToPDF(resume: ResumeData, options: PDFExportOp
   }
 
   const paperSize = options.paperSize || resume.style?.paperSize || "a4";
-  const defaultFilename = `${(resume.personalInfo?.fullName || "Resume").replace(/\s+/g, "_")}_RESUMIFY.pdf`;
+  const defaultFilename = `${(resume.personalInfo?.fullName || "Resume").replace(/\s+/g, "_")}_CVNest.pdf`;
   const filename = options.filename || defaultFilename;
 
   try {

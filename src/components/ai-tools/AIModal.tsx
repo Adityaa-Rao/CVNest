@@ -91,7 +91,7 @@ export const AIModal: React.FC<AIModalProps> = ({
           <div className="mx-5 mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-xs text-amber-700 dark:text-amber-300 flex items-start gap-2">
             <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
             <div>
-              <span className="font-semibold">Smart Heuristic Mode Active:</span> Gemini API key not set in environment. RESUMIFY is generating expert rule-based variations!
+              <span className="font-semibold">Smart Heuristic Mode Active:</span> Gemini API key not set in environment. CVNest is generating expert rule-based variations!
             </div>
           </div>
         )}

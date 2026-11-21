@@ -186,7 +186,7 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
 ];
 
 export const COLOR_PALETTES = [
-  { name: "Resumify Indigo", value: "#4f46e5" },
+  { name: "CVNest Indigo", value: "#4f46e5" },
   { name: "Ocean Blue", value: "#2563eb" },
   { name: "Slate Navy", value: "#1e293b" },
   { name: "Emerald Green", value: "#059669" },
