@@ -58,10 +58,3 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-### 4. Build for Production
-```bash
-npm run build
-npm run start
-# CVNest
-CVNest is an AI-powered resume-building platform that helps students, freshers, and professionals create polished, professional, and ATS-friendly resumes. It brings templates, editing tools, career assistance, and resume management together in one place. 
->>>>>>> 45a9ade2c8900237dcca3c6ac64240f06b83f535
