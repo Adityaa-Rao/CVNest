@@ -215,6 +215,22 @@ export interface TemplateMetadata {
   badge?: string;
   isPopular?: boolean;
   isNew?: boolean;
+  atsScore?: number;
+  layoutType?: 'Single Column' | 'Two Column' | 'Sidebar' | 'Timeline' | 'Project Grid';
+  recommendedFor?: string;
+}
+
+export interface JobApplication {
+  id: string;
+  company: string;
+  role: string;
+  location?: string;
+  salary?: string;
+  status: 'wishlist' | 'applied' | 'interviewing' | 'offer' | 'rejected';
+  appliedDate: string;
+  notes?: string;
+  jobUrl?: string;
+  resumeId?: string;
 }
 
 export interface CoverLetterData {

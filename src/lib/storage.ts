@@ -1,4 +1,4 @@
-import { ResumeData, CoverLetterData } from "@/types/resume";
+import { ResumeData, CoverLetterData, JobApplication } from "@/types/resume";
 import { SAMPLE_FRESHER_RESUME, SAMPLE_EXPERIENCED_RESUME } from "@/constants/sample-resumes";
 import { generateId } from "@/lib/utils";
 
@@ -6,6 +6,7 @@ const STORAGE_KEY_RESUMES = "cvnest_resumes_v1";
 const STORAGE_KEY_ACTIVE_ID = "cvnest_active_resume_id";
 const STORAGE_KEY_COVER_LETTERS = "cvnest_cover_letters_v1";
 const STORAGE_KEY_USER_PREFS = "cvnest_user_prefs_v1";
+const STORAGE_KEY_JOB_APPLICATIONS = "cvnest_job_applications_v1";
 
 export interface UserPreferences {
   theme: "light" | "dark" | "system";
@@ -183,6 +184,75 @@ export function deleteCoverLetter(id: string): void {
   if (typeof window === "undefined") return;
   const items = getStoredCoverLetters().filter((c) => c.id !== id);
   localStorage.setItem(STORAGE_KEY_COVER_LETTERS, JSON.stringify(items));
+}
+
+// Job Application Tracker Storage
+export function getStoredJobApplications(): JobApplication[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_JOB_APPLICATIONS);
+    if (!raw) {
+      const defaultApps: JobApplication[] = [
+        {
+          id: "app-1",
+          company: "Stripe",
+          role: "Software Engineer",
+          location: "Remote",
+          status: "interviewing",
+          appliedDate: "2026-03-05",
+          notes: "Round 2 System Design scheduled for Thursday.",
+          salary: "$140,000",
+        },
+        {
+          id: "app-2",
+          company: "Microsoft",
+          role: "Associate SDE",
+          location: "Bengaluru, India",
+          status: "applied",
+          appliedDate: "2026-03-08",
+          notes: "Applied via campus portal with BTech Fresher resume.",
+        },
+        {
+          id: "app-3",
+          company: "Vercel",
+          role: "Frontend Engineer",
+          location: "Remote",
+          status: "wishlist",
+          appliedDate: "2026-03-10",
+          notes: "Targeting Next.js ecosystem role.",
+        },
+      ];
+      localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(defaultApps));
+      return defaultApps;
+    }
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+export function saveJobApplication(app: JobApplication): void {
+  if (typeof window === "undefined") return;
+  try {
+    const items = getStoredJobApplications();
+    const idx = items.findIndex((a) => a.id === app.id);
+    let updated: JobApplication[];
+    if (idx >= 0) {
+      updated = [...items];
+      updated[idx] = app;
+    } else {
+      updated = [app, ...items];
+    }
+    localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(updated));
+  } catch (err) {
+    console.error("Failed to save job application", err);
+  }
+}
+
+export function deleteJobApplication(id: string): void {
+  if (typeof window === "undefined") return;
+  const items = getStoredJobApplications().filter((a) => a.id !== id);
+  localStorage.setItem(STORAGE_KEY_JOB_APPLICATIONS, JSON.stringify(items));
 }
 
 // User Preferences

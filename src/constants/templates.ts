@@ -11,6 +11,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     thumbnail: "bg-slate-50 border-slate-300",
     badge: "Maximum ATS Score",
     isPopular: true,
+    atsScore: 99,
+    layoutType: "Single Column",
+    recommendedFor: "Corporate, Finance, Enterprise, Government",
   },
   {
     id: "minimal-professional",
@@ -20,6 +23,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     description: "Refined typography, understated lines, and optimal whitespace. Great for traditional corporate and tech roles.",
     thumbnail: "bg-white border-zinc-200",
     isPopular: true,
+    atsScore: 97,
+    layoutType: "Single Column",
+    recommendedFor: "Software Engineers, Consultants, Project Managers",
   },
   {
     id: "corporate-standard",
@@ -28,6 +34,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "ATS-Friendly",
     description: "Structured corporate hierarchy with prominent position tags and compact details for enterprise firms.",
     thumbnail: "bg-stone-50 border-stone-300",
+    atsScore: 96,
+    layoutType: "Single Column",
+    recommendedFor: "Operations, Banking, Business Analysts",
   },
   {
     id: "modern-ats",
@@ -36,6 +45,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "ATS-Friendly",
     description: "Clean modern headers with date badges and tabular details that parse effortlessly in Workday and Taleo.",
     thumbnail: "bg-blue-50/40 border-blue-200",
+    atsScore: 98,
+    layoutType: "Single Column",
+    recommendedFor: "Tech Startups, DevOps, IT Services",
   },
   {
     id: "executive-traditional",
@@ -44,6 +56,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "ATS-Friendly",
     description: "Serif headings, centered executive identity, formal rule lines, and structured tenure history.",
     thumbnail: "bg-amber-50/30 border-amber-200",
+    atsScore: 95,
+    layoutType: "Single Column",
+    recommendedFor: "Directors, Senior Managers, Legal, Academics",
   },
 
   // --- Category B: Modern ---
@@ -56,6 +71,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     thumbnail: "bg-indigo-50/50 border-indigo-200",
     badge: "Trending",
     isPopular: true,
+    atsScore: 92,
+    layoutType: "Two Column",
+    recommendedFor: "Full-Stack Devs, Product Managers, Marketers",
   },
   {
     id: "elegant-blue",
@@ -65,6 +83,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     description: "Distinct indigo/navy accenting, contact pills, and sharp section dividers for mid-to-senior professionals.",
     thumbnail: "bg-sky-50/50 border-sky-200",
     isPopular: true,
+    atsScore: 94,
+    layoutType: "Single Column",
+    recommendedFor: "Tech Leads, Engineering Managers, Designers",
   },
   {
     id: "contemporary-slate",
@@ -73,6 +94,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Modern",
     description: "Sophisticated charcoal and slate hierarchy with connected timeline dots for career progression.",
     thumbnail: "bg-slate-100/70 border-slate-300",
+    atsScore: 90,
+    layoutType: "Timeline",
+    recommendedFor: "Frontend Engineers, Mobile Devs, Growth Leads",
   },
   {
     id: "minimal-clean",
@@ -81,6 +105,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Modern",
     description: "Nordic minimalism with ample breathing room, subtle border accents, and high aesthetic clarity.",
     thumbnail: "bg-neutral-50 border-neutral-200",
+    atsScore: 94,
+    layoutType: "Single Column",
+    recommendedFor: "Architects, Minimalist Coders, Content Strategists",
   },
   {
     id: "executive-pro",
@@ -90,6 +117,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     description: "Dual column with prominent summary card, metric highlights, and executive career milestones.",
     thumbnail: "bg-emerald-50/40 border-emerald-200",
     isNew: true,
+    atsScore: 91,
+    layoutType: "Two Column",
+    recommendedFor: "CTOs, VPs, Senior Solutions Architects",
   },
 
   // --- Category C: Creative ---
@@ -102,6 +132,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     thumbnail: "bg-violet-50/60 border-violet-200",
     badge: "For Designers",
     isPopular: true,
+    atsScore: 86,
+    layoutType: "Sidebar",
+    recommendedFor: "UI/UX Designers, Graphic Artists, Animators",
   },
   {
     id: "modern-sidebar",
@@ -110,6 +143,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Creative",
     description: "Dark contrast sidebar with white typography beside a clean daylight canvas for balanced impact.",
     thumbnail: "bg-zinc-800 text-white border-zinc-700",
+    atsScore: 88,
+    layoutType: "Sidebar",
+    recommendedFor: "Frontend Specialists, Creative Technologists",
   },
   {
     id: "portfolio-style",
@@ -119,6 +155,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     description: "Project-first showcase with card frames, tech tag badges, and highlighted GitHub & live demo links.",
     thumbnail: "bg-rose-50/40 border-rose-200",
     isNew: true,
+    atsScore: 89,
+    layoutType: "Project Grid",
+    recommendedFor: "Open-Source Developers, Game Developers, Freelancers",
   },
   {
     id: "elegant-creative",
@@ -127,6 +166,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Creative",
     description: "Editorial serif titles, quote block summary, and artistic spacing for marketers and creative directors.",
     thumbnail: "bg-orange-50/30 border-orange-200",
+    atsScore: 88,
+    layoutType: "Single Column",
+    recommendedFor: "Copywriters, Brand Strategists, PR Managers",
   },
   {
     id: "visual-professional",
@@ -135,6 +177,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Creative",
     description: "Modern gradient header with iconography and visual progress indicators for frontend and design roles.",
     thumbnail: "bg-teal-50/50 border-teal-200",
+    atsScore: 87,
+    layoutType: "Single Column",
+    recommendedFor: "Product Designers, Design Systems Engineers",
   },
 
   // --- Category D: Student and Fresher ---
@@ -147,6 +192,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     thumbnail: "bg-blue-50/30 border-blue-200",
     badge: "Campus Favorite",
     isPopular: true,
+    atsScore: 98,
+    layoutType: "Single Column",
+    recommendedFor: "BSc, BBA, BCom Graduates, Master's Applicants",
   },
   {
     id: "btech-fresher",
@@ -157,6 +205,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     thumbnail: "bg-cyan-50/50 border-cyan-200",
     badge: "Engineering Top Pick",
     isPopular: true,
+    atsScore: 97,
+    layoutType: "Single Column",
+    recommendedFor: "BTech, BE, MCA, CS & IT Freshers, Campus Placements",
   },
   {
     id: "software-developer",
@@ -166,6 +217,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     description: "Monospace code-accent headers, categorized tech stacks (Languages, Frameworks, Tools), and live project links.",
     thumbnail: "bg-slate-900 text-slate-100 border-slate-700",
     isPopular: true,
+    atsScore: 95,
+    layoutType: "Single Column",
+    recommendedFor: "Junior Software Engineers, Interns, Web Developers",
   },
   {
     id: "internship-ready",
@@ -174,6 +228,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Student & Fresher",
     description: "Impactful objective statement, academic projects, leadership responsibilities, and certifications.",
     thumbnail: "bg-purple-50/40 border-purple-200",
+    atsScore: 96,
+    layoutType: "Single Column",
+    recommendedFor: "Summer Internships, Co-op Programs, Apprentices",
   },
   {
     id: "academic-research",
@@ -182,6 +239,9 @@ export const RESUME_TEMPLATES: TemplateMetadata[] = [
     categoryLabel: "Student & Fresher",
     description: "Structured for MTech/MS applicants and researchers with publications, thesis, paper presentations, and honors.",
     thumbnail: "bg-stone-100/60 border-stone-300",
+    atsScore: 96,
+    layoutType: "Single Column",
+    recommendedFor: "MTech, MS, PhD Candidates, Research Scholars",
   },
 ];
 
