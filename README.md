@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-# CVNest — AI-Powered Professional Resume Builder SaaS
 
-> **Tagline**: *"Build Your Future, One Resume at a Time."*
+# CVNest — AI-Powered Professional Resume Builder SaaS
+"Build Your Future, One Resume at a Time."*
 
 CVNest is a complete, production-grade SaaS platform engineered for college students, BTech freshers, software developers, and experienced professionals worldwide.
 
