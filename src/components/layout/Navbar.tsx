@@ -15,7 +15,6 @@ import {
   Menu,
   X,
   GraduationCap,
-  ChevronRight,
   LayoutDashboard,
   Plus,
 } from "lucide-react";
@@ -28,7 +27,10 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const prefs = getUserPreferences();
-    if (prefs.theme === "dark" || (prefs.theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (
+      prefs.theme === "dark" ||
+      (prefs.theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       setIsDark(true);
       document.documentElement.classList.add("dark");
     } else {
@@ -49,7 +51,6 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  // Single-line navigation links ordered as specified
   const navLinks = [
     { href: "/templates", label: "Templates", icon: Compass },
     { href: "/builder", label: "Builder", icon: FileText },
@@ -61,54 +62,54 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/70 bg-background/90 backdrop-blur-md transition-colors">
-      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo on Left */}
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm transition-colors duration-150">
+      <div className="max-w-7xl mx-auto flex h-14 items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Flat Editorial Logo + Compact Fresher Mode */}
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-sky-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-              <FileText className="w-5 h-5" />
+          <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+            <div className="w-7 h-7 rounded-md bg-foreground text-background flex items-center justify-center">
+              <FileText className="w-4 h-4" strokeWidth={1.5} />
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg tracking-tight text-foreground flex items-center gap-1.5">
-                CVNest
-                <span className="text-[10px] uppercase font-semibold px-1.5 py-0.2 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-md border border-indigo-500/20">
-                  AI SaaS
-                </span>
-              </span>
-            </div>
+            <span className="font-semibold text-base tracking-tight text-foreground">
+              CVNest
+            </span>
           </Link>
 
-          {/* Compact Fresher Mode Pill (accessible without taking excess space) */}
           <Link
             href="/builder?mode=fresher"
-            className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 hover:bg-cyan-500/20 transition-all ml-1"
-            title="Dedicated mode for BTech students & freshers"
+            className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md bg-secondary text-foreground hover:bg-secondary/80 border border-border transition-colors duration-150"
+            title="Dedicated mode for BTech students and freshers"
           >
-            <GraduationCap className="w-3.5 h-3.5" />
+            <GraduationCap className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
             <span>Fresher Mode</span>
           </Link>
         </div>
 
         {/* Desktop Single-Line Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 text-xs xl:text-sm font-medium">
+        <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
           {navLinks.map((link) => {
             const Icon = link.icon;
-            const isActive = link.href === "/builder"
-              ? pathname === "/builder"
-              : pathname.startsWith(link.href);
+            const isActive =
+              link.href === "/builder"
+                ? pathname === "/builder"
+                : pathname.startsWith(link.href);
 
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-1.5 px-2.5 xl:px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-colors duration-150 ${
                   isActive
-                    ? "bg-secondary text-primary font-bold shadow-xs"
+                    ? "bg-secondary text-foreground font-medium"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                 }`}
               >
-                <Icon className="w-4 h-4 opacity-75" />
+                <Icon
+                  className={`w-4 h-4 flex-shrink-0 ${
+                    isActive ? "text-primary" : "text-muted-foreground"
+                  }`}
+                  strokeWidth={1.5}
+                />
                 <span>{link.label}</span>
               </Link>
             );
@@ -117,21 +118,23 @@ export const Navbar: React.FC = () => {
 
         {/* Right CTA Actions */}
         <div className="hidden sm:flex items-center gap-2">
-          {/* Dark / Light Mode Switch */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors duration-150"
           >
-            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-zinc-600" />}
+            {isDark ? (
+              <Sun className="w-4 h-4" strokeWidth={1.5} />
+            ) : (
+              <Moon className="w-4 h-4" strokeWidth={1.5} />
+            )}
           </button>
 
-          {/* Primary CTA Button: Create Resume */}
           <Link
             href="/builder"
-            className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold px-4 py-2 rounded-xl bg-primary text-primary-foreground shadow-sm hover:opacity-95 active:scale-[0.98] transition-all whitespace-nowrap"
+            className="flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150 whitespace-nowrap"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4" strokeWidth={1.5} />
             <span>Create Resume</span>
           </Link>
         </div>
@@ -141,22 +144,31 @@ export const Navbar: React.FC = () => {
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
-            className="p-2 rounded-lg text-muted-foreground hover:bg-secondary"
+            className="p-2 rounded-lg text-muted-foreground hover:bg-secondary transition-colors duration-150"
           >
-            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+            {isDark ? (
+              <Sun className="w-4 h-4" strokeWidth={1.5} />
+            ) : (
+              <Moon className="w-4 h-4" strokeWidth={1.5} />
+            )}
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-foreground hover:bg-secondary"
+            aria-label="Toggle navigation menu"
+            className="p-2 rounded-lg text-foreground hover:bg-secondary transition-colors duration-150"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? (
+              <X className="w-5 h-5" strokeWidth={1.5} />
+            ) : (
+              <Menu className="w-5 h-5" strokeWidth={1.5} />
+            )}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-border bg-background px-4 pt-2 pb-4 space-y-1.5">
+        <div className="lg:hidden border-b border-border bg-background px-4 pt-2 pb-4 space-y-1">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname.startsWith(link.href);
@@ -165,30 +177,34 @@ export const Navbar: React.FC = () => {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium ${
-                  isActive ? "bg-secondary text-primary font-bold" : "text-muted-foreground hover:bg-secondary"
+                className={`flex items-center gap-2.5 h-9 px-3 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                  isActive
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
                 <span>{link.label}</span>
               </Link>
             );
           })}
 
-          <div className="pt-2 border-t border-border flex flex-col gap-2">
+          <div className="pt-3 mt-2 border-t border-border flex flex-col gap-2">
             <Link
               href="/builder?mode=fresher"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 py-2 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-semibold text-xs border border-cyan-500/20"
+              className="flex items-center justify-center gap-2 h-9 rounded-lg bg-secondary text-foreground font-medium text-sm border border-border transition-colors duration-150"
             >
-              <GraduationCap className="w-4 h-4" /> Fresher Engineering Mode
+              <GraduationCap className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+              <span>Fresher Mode</span>
             </Link>
             <Link
               href="/builder"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-sm"
+              className="flex items-center justify-center gap-1.5 h-9 rounded-lg bg-primary text-primary-foreground font-medium text-sm"
             >
-              <Plus className="w-4 h-4" /> Create Resume
+              <Plus className="w-4 h-4" strokeWidth={1.5} />
+              <span>Create Resume</span>
             </Link>
           </div>
         </div>

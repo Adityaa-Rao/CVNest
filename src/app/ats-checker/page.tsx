@@ -1,28 +1,22 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ResumeData } from "@/types/resume";
 import { getStoredResumes, getResumeById } from "@/lib/storage";
 import { analyzeResumeATS, ATSAnalysisReport } from "@/lib/ats/analyzer";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import {
-  ShieldCheck,
-  AlertTriangle,
   CheckCircle2,
   XCircle,
   ArrowRight,
-  TrendingUp,
-  FileSearch,
-  Sparkles,
   Info,
 } from "lucide-react";
 import Link from "next/link";
 
 function ATSCheckerContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const resumeId = searchParams.get("id");
 
   const [resumes, setResumes] = useState<ResumeData[]>([]);
@@ -56,17 +50,17 @@ function ATSCheckerContent() {
   if (!selectedResume || !analysis) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-sm text-muted-foreground">Loading ATS Diagnostic...</div>
+        <div className="text-sm text-muted-foreground">Loading ATS diagnostic...</div>
       </div>
     );
   }
 
-  const scoreColor =
+  const scoreRingColor =
     analysis.score >= 85
-      ? "text-emerald-500 border-emerald-500 bg-emerald-500/10"
+      ? "text-emerald-600 border-emerald-500/40 bg-emerald-500/5"
       : analysis.score >= 70
-      ? "text-blue-500 border-blue-500 bg-blue-500/10"
-      : "text-amber-500 border-amber-500 bg-amber-500/10";
+      ? "text-primary border-primary/40 bg-primary/5"
+      : "text-amber-600 border-amber-500/40 bg-amber-500/5";
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -74,25 +68,23 @@ function ATSCheckerContent() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16 space-y-10">
         {/* Header with Resume Selector */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5" /> ATS Compatibility Engine
-            </div>
-            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-              Applicant Tracking System (ATS) Diagnostic
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border pb-6">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-primary">ATS Diagnostic</span>
+            <h1 className="text-2xl md:text-3xl font-medium tracking-[-0.015em] text-foreground">
+              Applicant Tracking System check
             </h1>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1 max-w-2xl">
-              Simulates parsing algorithms used by modern recruitment systems (Workday, Taleo, Greenhouse). Uncovers formatting errors, missing keywords, and readability blockers.
+            <p className="text-xs md:text-sm text-muted-foreground max-w-2xl">
+              Checks section structure, contact validity, quantified metrics, and keyword frequency against standard parser rules.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-muted-foreground">Active Resume:</span>
+            <span className="text-xs font-medium text-muted-foreground">Resume</span>
             <select
               value={selectedResume.id}
               onChange={(e) => handleSelectResume(e.target.value)}
-              className="text-xs font-semibold px-3 py-2 rounded-xl border border-input bg-card text-foreground focus:ring-2 focus:ring-primary/20 outline-none"
+              className="h-9 text-xs font-medium px-3 rounded-lg border border-input bg-card text-foreground focus:ring-2 focus:ring-ring/20 outline-none"
             >
               {resumes.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -103,73 +95,66 @@ function ATSCheckerContent() {
           </div>
         </div>
 
-        {/* ATS Score & Overview Banner */}
+        {/* ATS Score & Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Main Score Card (4 cols) */}
-          <div className="lg:col-span-4 rounded-2xl border border-border bg-card p-6 flex flex-col items-center justify-center text-center space-y-4 shadow-sm">
-            <div className={`w-32 h-32 rounded-full border-4 flex flex-col items-center justify-center ${scoreColor} shadow-inner`}>
-              <span className="text-4xl font-black">{analysis.score}</span>
-              <span className="text-[11px] font-bold uppercase tracking-wider opacity-80">out of 100</span>
+          <div className="lg:col-span-4 rounded-xl border border-border bg-card p-6 flex flex-col items-center justify-center text-center space-y-4">
+            <div className={`w-28 h-28 rounded-full border-2 flex flex-col items-center justify-center ${scoreRingColor}`}>
+              <span className="text-3xl font-medium tabular-nums">{analysis.score}</span>
+              <span className="text-[11px] font-mono text-muted-foreground tabular-nums">/ 100</span>
             </div>
 
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Rating</span>
-              <h3 className="text-xl font-bold text-foreground mt-0.5">{analysis.rating} Compatibility</h3>
-              <p className="text-xs text-muted-foreground mt-2 leading-relaxed px-2">
+            <div className="space-y-1">
+              <div className="text-xs text-muted-foreground">Compatibility</div>
+              <h3 className="text-lg font-medium text-foreground">{analysis.rating}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed px-2">
                 {analysis.summary}
               </p>
             </div>
 
             <Link
               href={`/builder?id=${selectedResume.id}`}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:opacity-90 shadow-sm active:scale-98 transition-all"
+              className="w-full h-9 flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground font-medium text-xs hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
             >
-              <span>Improve My Resume Now</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Improve my resume</span>
+              <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
             </Link>
           </div>
 
-          {/* Breakdown Strengths & Weaknesses (8 cols) */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Disclaimer card */}
-            <div className="p-4 rounded-xl bg-secondary/40 border border-border text-xs text-muted-foreground flex items-start gap-2.5">
-              <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-              <p>
-                <strong>ATS Scoring Logic:</strong> Checks section headers, email validity, metric quantification in experience bullets, contact presence, and keyword frequency. A high ATS score ensures your resume can be read and parsed correctly by hiring software, though interview invitations depend on individual recruiter evaluations.
+            <div className="p-4 rounded-xl bg-secondary/50 border border-border text-xs text-muted-foreground flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+              <p className="leading-relaxed">
+                <strong className="font-medium text-foreground">How the score is calculated:</strong> Evaluates section headers, email validity, metric quantification in experience bullets, contact presence, and keyword frequency. A high score ensures clean machine parsing, though interviews depend on recruiter review.
               </p>
             </div>
 
-            {/* Strengths */}
-            <div className="p-5 rounded-2xl border border-border bg-card space-y-3">
-              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                <span>Verified Strengths ({analysis.strengths.length})</span>
+            <div className="p-5 rounded-xl border border-border bg-card space-y-3">
+              <h3 className="font-medium text-sm text-foreground tabular-nums">
+                Verified strengths ({analysis.strengths.length})
               </h3>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
                 {analysis.strengths.map((s, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-emerald-500 font-bold">✓</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
                     <span>{s}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Keyword Density detected */}
-            <div className="p-5 rounded-2xl border border-border bg-card space-y-3">
-              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <span>Detected Technical Keyword Frequency</span>
+            <div className="p-5 rounded-xl border border-border bg-card space-y-3">
+              <h3 className="font-medium text-sm text-foreground">
+                Detected technical keywords
               </h3>
               <div className="flex flex-wrap gap-2">
                 {analysis.keywordDensity.map((k, i) => (
                   <span
                     key={i}
-                    className="text-xs px-2.5 py-1 rounded-lg bg-secondary text-foreground font-medium border border-border flex items-center gap-1.5"
+                    className="text-xs px-2.5 py-1 rounded-md bg-secondary text-foreground border border-border flex items-center gap-1.5 tabular-nums"
                   >
                     <span>{k.keyword}</span>
-                    <span className="text-[10px] bg-primary/10 text-primary font-bold px-1.5 py-0.2 rounded-full">
-                      {k.count}x
+                    <span className="text-[11px] font-mono text-muted-foreground">
+                      {k.count}×
                     </span>
                   </span>
                 ))}
@@ -178,27 +163,28 @@ function ATSCheckerContent() {
           </div>
         </div>
 
-        {/* Detailed Individual Checks Checklist */}
+        {/* Detailed Checklist */}
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-foreground">Detailed Checklist Breakdown</h2>
-          <div className="space-y-3">
+          <h2 className="text-lg font-medium text-foreground">Checklist breakdown</h2>
+          <div className="divide-y divide-border rounded-xl border border-border bg-card">
             {analysis.checks.map((check, i) => (
               <div
                 key={i}
-                className="p-4 rounded-xl border border-border bg-card flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="flex items-start gap-3">
                   {check.passed ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                   ) : (
-                    <XCircle className="w-5 h-5 text-rose-500 flex-shrink-0 mt-0.5" />
+                    <XCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                   )}
                   <div>
-                    <h4 className="font-bold text-xs text-foreground">{check.title}</h4>
+                    <h4 className="font-medium text-xs text-foreground">{check.title}</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">{check.message}</p>
                     {check.suggestion && (
-                      <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mt-1">
-                        Action: {check.suggestion}
+                      <p className="text-xs text-foreground mt-1">
+                        <span className="text-muted-foreground">Suggested fix: </span>
+                        {check.suggestion}
                       </p>
                     )}
                   </div>
@@ -207,10 +193,10 @@ function ATSCheckerContent() {
                 {!check.passed && check.targetSection && (
                   <Link
                     href={`/builder?id=${selectedResume.id}`}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 text-foreground flex items-center gap-1 flex-shrink-0"
+                    className="text-xs font-medium h-8 px-3 rounded-lg border border-border bg-background hover:bg-secondary text-foreground flex items-center gap-1.5 flex-shrink-0 transition-colors duration-150"
                   >
-                    <span>Fix in Editor</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Fix in editor</span>
+                    <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
                   </Link>
                 )}
               </div>
@@ -226,7 +212,7 @@ function ATSCheckerContent() {
 
 export default function ATSCheckerPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="text-xs text-muted-foreground">Loading ATS Diagnostic...</div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="text-xs text-muted-foreground">Loading ATS diagnostic...</div></div>}>
       <ATSCheckerContent />
     </Suspense>
   );

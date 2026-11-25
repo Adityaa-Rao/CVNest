@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+# CVNest — AI-Powered Professional Resume Builder SaaS
+>>>>>>> b986102 (Update README file)
 
 # CVNest — AI-Powered Professional Resume Builder SaaS
 "Build Your Future, One Resume at a Time."*

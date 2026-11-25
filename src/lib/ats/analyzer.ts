@@ -269,7 +269,8 @@ export function analyzeResumeATS(resume: ResumeData, targetJobDescription?: stri
 
   const keywordDensity = techKeywords
     .map((kw) => {
-      const regex = new RegExp(`\\b${kw.replace(".", "\\.")}\\b`, "gi");
+      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regex = new RegExp(`(?:^|[^a-z0-9])${escaped}(?=$|[^a-z0-9])`, "gi");
       const matches = fullText.match(regex);
       return { keyword: kw, count: matches ? matches.length : 0 };
     })

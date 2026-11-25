@@ -35,21 +35,11 @@ import {
   Share2,
   Upload,
   Sparkles,
-  CheckCircle2,
   Clock,
   GraduationCap,
-  Briefcase,
-  Layers,
-  ChevronRight,
-  ExternalLink,
   Check,
   Github,
-  HelpCircle,
-  FolderGit2,
-  Heart,
-  TrendingUp,
-  MapPin,
-  Calendar,
+  X,
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -59,22 +49,18 @@ export default function DashboardPage() {
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([]);
   const [favoriteTemplates, setFavoriteTemplates] = useState<string[]>([]);
 
-  // Modals state
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [importText, setImportText] = useState("");
   const [isImporting, setIsImporting] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // GitHub Import Modal
   const [githubModalOpen, setGithubModalOpen] = useState(false);
   const [githubRepoUrl, setGithubRepoUrl] = useState("");
   const [githubLoading, setGithubLoading] = useState(false);
 
-  // AI Interview Prep Modal
   const [interviewPrepOpen, setInterviewPrepOpen] = useState(false);
   const [interviewQuestions, setInterviewQuestions] = useState<Array<{ q: string; type: string; answerKey: string }>>([]);
 
-  // Job Application Modal
   const [jobModalOpen, setJobModalOpen] = useState(false);
   const [newJobCompany, setNewJobCompany] = useState("");
   const [newJobRole, setNewJobRole] = useState("");
@@ -142,7 +128,6 @@ export default function DashboardPage() {
     }
   };
 
-  // GitHub Project Import Logic
   const handleImportGitHubRepo = async () => {
     if (!githubRepoUrl.trim() || resumes.length === 0) return;
     setGithubLoading(true);
@@ -155,12 +140,12 @@ export default function DashboardPage() {
       const newProject = {
         id: generateId(),
         name: repoName.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        description: `Production-ready application architected and hosted on GitHub (${repoClean}). Implements clean modular components, robust API integrations, and automated deployment pipelines.`,
+        description: `Application hosted on GitHub (${repoClean}) with modular components, API integrations, and automated checks.`,
         technologies: ["TypeScript", "Next.js", "Tailwind CSS", "GitHub Actions"],
         githubUrl: `https://github.com/${repoClean}`,
         keyContributions: [
-          "Developed core service architecture with rigorous unit and integration tests.",
-          "Configured continuous integration workflow with GitHub Actions for automated linting and build checks.",
+          "Developed core service architecture with unit and integration tests.",
+          "Configured continuous integration workflow with GitHub Actions for linting and build checks.",
         ],
       };
 
@@ -172,7 +157,7 @@ export default function DashboardPage() {
       saveResume(updated);
       setResumes(getStoredResumes());
       setGithubModalOpen(false);
-      alert(`Successfully imported "${newProject.name}" into ${active.title}!`);
+      alert(`Imported "${newProject.name}" into ${active.title}`);
     } catch (err) {
       console.error(err);
     } finally {
@@ -180,37 +165,35 @@ export default function DashboardPage() {
     }
   };
 
-  // AI Interview Prep Generator
   const handleOpenInterviewPrep = () => {
     const active = resumes[0];
-    const role = active?.targetRole || "Software Engineer";
     const skills = active?.skills?.flatMap((c) => c.skills.map((s) => s.name)).slice(0, 5) || ["JavaScript", "React", "APIs"];
 
     const questions = [
       {
-        q: `How do you structure and design scalable systems using ${skills[0] || "core technical stacks"} in production?`,
-        type: "Technical Architecture",
-        answerKey: "Explain modular component isolation, error boundaries, caching layers, and CI/CD pipelines.",
+        q: `How do you structure and design scalable systems using ${skills[0] || "your primary stack"} in production?`,
+        type: "Architecture",
+        answerKey: "Explain modular component isolation, error boundaries, caching layers, and deployment pipelines.",
       },
       {
         q: "Describe a challenging bug or bottleneck you diagnosed and how you resolved it.",
-        type: "Problem Solving (STAR)",
-        answerKey: "Use Situation, Task, Action, Result. Highlight profiler tools, log telemetry, and measured performance gains.",
+        type: "Problem solving",
+        answerKey: "Use Situation, Task, Action, Result. Highlight profiler tools, log telemetry, and measured gains.",
       },
       {
-        q: `What trade-offs do you consider when selecting ${skills[1] || "modern frameworks"} vs traditional architectures?`,
-        type: "Engineering Strategy",
-        answerKey: "Discuss developer velocity, server vs client bundle weights, and operational maintenance overhead.",
+        q: `What trade-offs do you consider when choosing ${skills[1] || "modern frameworks"} over simpler alternatives?`,
+        type: "Engineering judgment",
+        answerKey: "Discuss developer velocity, bundle weight, runtime constraints, and maintenance overhead.",
       },
       {
         q: "How do you ensure zero-downtime database migrations and data consistency?",
-        type: "Backend & Resilience",
-        answerKey: "Mention dual-write phases, backward-compatible schemas, blue-green deployments, and rollback contingencies.",
+        type: "Backend resilience",
+        answerKey: "Mention dual-write phases, backward-compatible schemas, blue-green deployments, and rollback plans.",
       },
       {
-        q: "How do you resolve architectural disagreements within your team?",
-        type: "Behavioral Leadership",
-        answerKey: "Focus on benchmark-driven experiments, RFC design reviews, blameless post-mortems, and alignment with business goals.",
+        q: "How do you resolve architectural disagreements within an engineering team?",
+        type: "Collaboration",
+        answerKey: "Focus on benchmark-driven experiments, RFC design reviews, blameless post-mortems, and product goals.",
       },
     ];
 
@@ -218,7 +201,6 @@ export default function DashboardPage() {
     setInterviewPrepOpen(true);
   };
 
-  // Save new job application
   const handleCreateJobApp = () => {
     if (!newJobCompany || !newJobRole) return;
     const newApp: JobApplication = {
@@ -246,58 +228,77 @@ export default function DashboardPage() {
     }
   };
 
+  const avgAtsScore =
+    resumes.length > 0
+      ? Math.round(resumes.reduce((acc, r) => acc + analyzeResumeATS(r).score, 0) / resumes.length)
+      : 0;
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-10">
-        {/* Welcome Hero Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-indigo-900/20 via-sky-900/10 to-indigo-950/20 border border-indigo-500/20 shadow-sm">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5" /> CVNest SaaS Dashboard
-            </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              Welcome back to your Career Command Center
+        {/* Clean Contextual Page Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border pb-6">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-muted-foreground">Workspace</span>
+            <h1 className="text-2xl md:text-3xl font-medium tracking-[-0.015em] text-foreground">
+              Resumes and applications
             </h1>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1 max-w-xl">
-              Create and manage targeted resume versions for every opportunity. Track job applications and prepare for interviews with AI tools.
-            </p>
           </div>
 
-          {/* Quick Actions */}
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => setGithubModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-border bg-card text-xs font-semibold hover:bg-secondary transition-all"
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border bg-card text-xs font-medium text-foreground hover:bg-secondary transition-colors duration-150"
             >
-              <Github className="w-4 h-4 text-muted-foreground" />
-              <span>Import GitHub Repo</span>
+              <Github className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+              <span>Import GitHub</span>
             </button>
 
             <button
               onClick={handleOpenInterviewPrep}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30 text-xs font-semibold hover:bg-indigo-500/20 transition-all"
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border bg-card text-xs font-medium text-foreground hover:bg-secondary transition-colors duration-150"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>AI Interview Prep</span>
+              <Sparkles className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+              <span>Interview prep</span>
             </button>
 
             <button
               onClick={() => handleCreateNew(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-semibold hover:bg-cyan-500/20 transition-all"
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border bg-card text-xs font-medium text-foreground hover:bg-secondary transition-colors duration-150"
             >
-              <GraduationCap className="w-4 h-4" />
-              <span>Fresher BTech Mode</span>
+              <GraduationCap className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
+              <span>Fresher resume</span>
             </button>
 
             <button
               onClick={() => handleCreateNew(false)}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 shadow-sm active:scale-98 transition-all"
+              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
             >
-              <Plus className="w-4 h-4" />
-              <span>Create New Resume</span>
+              <Plus className="w-4 h-4" strokeWidth={1.5} />
+              <span>New resume</span>
             </button>
+          </div>
+        </div>
+
+        {/* Summary Stat Row (Clean Numbers Only, Tabular) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-5 rounded-xl border border-border bg-card space-y-1">
+            <div className="text-xs text-muted-foreground">Saved resumes</div>
+            <div className="text-2xl font-medium text-foreground tabular-nums">{resumes.length}</div>
+          </div>
+          <div className="p-5 rounded-xl border border-border bg-card space-y-1">
+            <div className="text-xs text-muted-foreground">Average ATS score</div>
+            <div className="text-2xl font-medium text-foreground tabular-nums">{avgAtsScore}%</div>
+          </div>
+          <div className="p-5 rounded-xl border border-border bg-card space-y-1">
+            <div className="text-xs text-muted-foreground">Active applications</div>
+            <div className="text-2xl font-medium text-foreground tabular-nums">{jobApplications.length}</div>
+          </div>
+          <div className="p-5 rounded-xl border border-border bg-card space-y-1">
+            <div className="text-xs text-muted-foreground">Cover letters</div>
+            <div className="text-2xl font-medium text-foreground tabular-nums">{coverLetters.length}</div>
           </div>
         </div>
 
@@ -305,14 +306,15 @@ export default function DashboardPage() {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">My Resumes & Tailored Versions</h2>
-              <p className="text-xs text-muted-foreground">Keep dedicated copies for Frontend, Backend, or Full-Stack roles.</p>
+              <h2 className="text-base font-medium text-foreground">Resumes and tailored versions</h2>
+              <p className="text-xs text-muted-foreground">Keep separate copies for different target roles.</p>
             </div>
             <button
               onClick={() => setImportModalOpen(true)}
-              className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+              className="text-xs font-medium text-primary hover:underline inline-flex items-center gap-1.5"
             >
-              <Upload className="w-3.5 h-3.5" /> Import Existing Resume Text
+              <Upload className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Import text</span>
             </button>
           </div>
 
@@ -324,12 +326,12 @@ export default function DashboardPage() {
               return (
                 <div
                   key={res.id}
-                  className="group rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 hover:shadow-lg transition-all flex flex-col justify-between"
+                  className="rounded-xl border border-border bg-card overflow-hidden hover:border-foreground/25 transition-colors duration-150 flex flex-col justify-between"
                 >
                   <div className="p-5 space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
-                        <h3 className="font-bold text-sm text-foreground truncate group-hover:text-primary transition-colors">
+                        <h3 className="font-medium text-sm text-foreground truncate">
                           {res.title}
                         </h3>
                         <p className="text-xs text-muted-foreground truncate mt-0.5">
@@ -337,65 +339,71 @@ export default function DashboardPage() {
                         </p>
                       </div>
 
-                      <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
-                          ats.score >= 80 ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600"
-                        }`}
+                      <Link
+                        href={`/ats-checker?id=${res.id}`}
+                        className="text-[11px] font-mono text-muted-foreground hover:text-foreground tabular-nums flex-shrink-0"
+                        title="Open ATS check"
                       >
                         ATS {ats.score}%
-                      </span>
+                      </Link>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground pt-1">
-                      <span className="px-2 py-0.5 rounded bg-secondary font-medium">
+                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground pt-1 tabular-nums">
+                      <span className="px-2 py-0.5 rounded bg-secondary text-foreground font-medium">
                         {tmpl.name}
                       </span>
                       <span>·</span>
                       <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
+                        <Clock className="w-3 h-3" strokeWidth={1.5} />
                         {new Date(res.updatedAt).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
 
                   {/* Actions Bar */}
-                  <div className="px-5 py-3 border-t border-border bg-secondary/20 flex items-center justify-between text-xs">
+                  <div className="px-5 py-3 border-t border-border bg-secondary/30 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleDuplicate(res.id)}
                         title="Duplicate as new version"
-                        className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+                        className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
                       >
-                        <Copy className="w-3.5 h-3.5" />
+                        <Copy className="w-3.5 h-3.5" strokeWidth={1.5} />
                       </button>
                       <button
                         onClick={() => handleShare(res)}
-                        title="Copy Public Link"
-                        className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+                        title="Copy public link"
+                        className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
                       >
-                        {copiedId === res.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Share2 className="w-3.5 h-3.5" />}
+                        {copiedId === res.id ? (
+                          <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={1.5} />
+                        ) : (
+                          <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        )}
                       </button>
                       <button
                         onClick={() => handleDelete(res.id)}
                         title="Delete resume"
-                        className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-destructive"
+                        className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-destructive transition-colors duration-150"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
+                        <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
                       </button>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleDownload(res)}
-                        className="px-2.5 py-1 rounded bg-secondary hover:bg-secondary/80 font-medium text-foreground flex items-center gap-1 text-[11px]"
+                        className="h-7 px-2.5 rounded-md border border-border bg-card hover:bg-secondary font-medium text-foreground flex items-center gap-1 text-[11px] transition-colors duration-150"
                       >
-                        <Download className="w-3 h-3" /> PDF
+                        <Download className="w-3 h-3" strokeWidth={1.5} />
+                        <span>PDF</span>
                       </button>
                       <Link
                         href={`/builder?id=${res.id}`}
-                        className="px-3 py-1 rounded bg-primary text-primary-foreground font-semibold flex items-center gap-1 text-[11px] hover:opacity-95"
+                        className="h-7 px-3 rounded-md bg-primary text-primary-foreground font-medium flex items-center gap-1 text-[11px] hover:opacity-95 transition-opacity duration-150"
                       >
-                        <Edit className="w-3 h-3" /> Edit
+                        <Edit className="w-3 h-3" strokeWidth={1.5} />
+                        <span>Edit</span>
                       </Link>
                     </div>
                   </div>
@@ -406,17 +414,18 @@ export default function DashboardPage() {
         </section>
 
         {/* 2. Job Application Tracker */}
-        <section className="space-y-4 pt-4 border-t border-border">
+        <section className="space-y-4 pt-6 border-t border-border">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">Job Application Tracker</h2>
-              <p className="text-xs text-muted-foreground">Monitor and organize where your resumes have been submitted.</p>
+              <h2 className="text-base font-medium text-foreground">Application tracker</h2>
+              <p className="text-xs text-muted-foreground">Track where each resume version has been submitted.</p>
             </div>
             <button
               onClick={() => setJobModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 shadow-sm"
+              className="inline-flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:opacity-95 transition-opacity duration-150"
             >
-              <Plus className="w-3.5 h-3.5" /> Add Application
+              <Plus className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Add application</span>
             </button>
           </div>
 
@@ -424,27 +433,27 @@ export default function DashboardPage() {
             {(["wishlist", "applied", "interviewing", "offer"] as const).map((colStatus) => {
               const items = jobApplications.filter((a) => a.status === colStatus);
               const labelMap: Record<string, string> = {
-                wishlist: "Wishlist / Target",
+                wishlist: "Wishlist",
                 applied: "Applied",
                 interviewing: "Interviewing",
-                offer: "Offer Received 🎉",
+                offer: "Offer received",
               };
 
               return (
-                <div key={colStatus} className="p-4 rounded-2xl border border-border bg-card/60 space-y-3">
-                  <div className="flex justify-between items-center text-xs font-bold">
-                    <span className="capitalize">{labelMap[colStatus]}</span>
-                    <span className="px-2 py-0.5 rounded-full bg-secondary text-[10px] font-mono">
+                <div key={colStatus} className="p-4 rounded-xl border border-border bg-card space-y-3">
+                  <div className="flex justify-between items-center text-xs font-medium">
+                    <span className="text-foreground">{labelMap[colStatus]}</span>
+                    <span className="text-muted-foreground font-mono text-[11px] tabular-nums">
                       {items.length}
                     </span>
                   </div>
 
                   <div className="space-y-2.5 min-h-[140px]">
                     {items.map((app) => (
-                      <div key={app.id} className="p-3 rounded-xl border border-border bg-card space-y-2 shadow-xs">
+                      <div key={app.id} className="p-3 rounded-lg border border-border bg-background space-y-2">
                         <div className="flex justify-between items-start">
                           <div>
-                            <div className="font-bold text-xs text-foreground">{app.company}</div>
+                            <div className="font-medium text-xs text-foreground">{app.company}</div>
                             <div className="text-[11px] text-muted-foreground">{app.role}</div>
                           </div>
                           <button
@@ -452,24 +461,25 @@ export default function DashboardPage() {
                               deleteJobApplication(app.id);
                               setJobApplications(getStoredJobApplications());
                             }}
-                            className="text-muted-foreground hover:text-destructive p-0.5"
+                            aria-label="Delete application"
+                            className="text-muted-foreground hover:text-destructive p-0.5 transition-colors duration-150"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3 h-3" strokeWidth={1.5} />
                           </button>
                         </div>
 
                         {app.notes && (
-                          <div className="text-[10px] text-muted-foreground bg-secondary/40 p-1.5 rounded leading-snug">
+                          <div className="text-[11px] text-muted-foreground bg-secondary/50 p-2 rounded-md leading-snug">
                             {app.notes}
                           </div>
                         )}
 
-                        <div className="flex items-center justify-between pt-1 border-t border-border text-[10px]">
-                          <span className="text-zinc-400 font-mono">{app.appliedDate}</span>
+                        <div className="flex items-center justify-between pt-1.5 border-t border-border text-[11px]">
+                          <span className="text-muted-foreground font-mono tabular-nums">{app.appliedDate}</span>
                           <select
                             value={app.status}
-                            onChange={(e) => handleUpdateJobStatus(app.id, e.target.value as any)}
-                            className="bg-transparent text-[10px] font-semibold text-primary outline-none cursor-pointer"
+                            onChange={(e) => handleUpdateJobStatus(app.id, e.target.value as JobApplication["status"])}
+                            className="bg-transparent text-[11px] font-medium text-primary outline-none cursor-pointer"
                           >
                             <option value="wishlist">Wishlist</option>
                             <option value="applied">Applied</option>
@@ -482,8 +492,8 @@ export default function DashboardPage() {
                     ))}
 
                     {items.length === 0 && (
-                      <div className="text-[11px] text-muted-foreground/60 text-center py-8">
-                        No applications here
+                      <div className="text-[11px] text-muted-foreground text-center py-8">
+                        No applications
                       </div>
                     )}
                   </div>
@@ -494,14 +504,14 @@ export default function DashboardPage() {
         </section>
 
         {/* 3. Favorite Templates Showcase */}
-        <section className="space-y-4 pt-4 border-t border-border">
+        <section className="space-y-4 pt-6 border-t border-border">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">Favorite Templates</h2>
-              <p className="text-xs text-muted-foreground">Quick access to your preferred resume designs.</p>
+              <h2 className="text-base font-medium text-foreground">Favorite templates</h2>
+              <p className="text-xs text-muted-foreground">Starred layouts from the template gallery.</p>
             </div>
-            <Link href="/templates" className="text-xs font-semibold text-primary hover:underline">
-              Explore All 20 Templates →
+            <Link href="/templates" className="text-xs font-medium text-primary hover:underline">
+              Browse all templates
             </Link>
           </div>
 
@@ -509,20 +519,20 @@ export default function DashboardPage() {
             {RESUME_TEMPLATES.filter((t) => favoriteTemplates.includes(t.id)).slice(0, 4).map((tmpl) => (
               <div
                 key={tmpl.id}
-                className="p-3.5 rounded-2xl border border-border bg-card space-y-3 hover:border-primary/50 transition-all"
+                className="p-4 rounded-xl border border-border bg-card space-y-3 hover:border-foreground/25 transition-colors duration-150"
               >
                 <div className="max-w-[140px] mx-auto shadow-sm rounded-md overflow-hidden">
                   <TemplateThumbnail template={tmpl} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-xs text-foreground">{tmpl.name}</h4>
-                  <p className="text-[10px] text-muted-foreground">{tmpl.categoryLabel}</p>
+                  <h4 className="font-medium text-xs text-foreground">{tmpl.name}</h4>
+                  <p className="text-[11px] text-muted-foreground">{tmpl.categoryLabel}</p>
                 </div>
                 <Link
                   href={`/builder?template=${tmpl.id}`}
-                  className="block text-center py-1.5 rounded-lg bg-secondary text-xs font-semibold hover:bg-secondary/80 text-foreground"
+                  className="flex items-center justify-center h-8 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors duration-150"
                 >
-                  Use Template
+                  Use template
                 </Link>
               </div>
             ))}
@@ -530,23 +540,23 @@ export default function DashboardPage() {
         </section>
 
         {/* 4. Saved Cover Letters */}
-        <section className="space-y-4 pt-4 border-t border-border">
+        <section className="space-y-4 pt-6 border-t border-border">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-foreground">Saved Cover Letters</h2>
-              <p className="text-xs text-muted-foreground">Tailored letters matched to your applications.</p>
+              <h2 className="text-base font-medium text-foreground">Saved cover letters</h2>
+              <p className="text-xs text-muted-foreground">Letters tailored to specific roles and companies.</p>
             </div>
-            <Link href="/cover-letter" className="text-xs font-semibold text-primary hover:underline">
-              Create Cover Letter →
+            <Link href="/cover-letter" className="text-xs font-medium text-primary hover:underline">
+              New cover letter
             </Link>
           </div>
 
           {coverLetters.length === 0 ? (
-            <div className="p-8 rounded-2xl border border-dashed border-border text-center space-y-2 bg-secondary/10">
-              <FileText className="w-8 h-8 text-muted-foreground mx-auto" />
-              <h4 className="text-sm font-semibold text-foreground">No cover letters created yet</h4>
+            <div className="p-8 rounded-xl border border-dashed border-border text-center space-y-2 bg-card">
+              <FileText className="w-6 h-6 text-muted-foreground mx-auto" strokeWidth={1.5} />
+              <h4 className="text-sm font-medium text-foreground">No cover letters yet</h4>
               <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                Generate tailored cover letters matching your resume template in 1 click.
+                Draft a letter in the Cover Letter Studio and save it here.
               </p>
             </div>
           ) : (
@@ -554,7 +564,7 @@ export default function DashboardPage() {
               {coverLetters.map((cl) => (
                 <div key={cl.id} className="p-4 rounded-xl border border-border bg-card flex justify-between items-center">
                   <div>
-                    <h4 className="font-bold text-sm text-foreground">{cl.title}</h4>
+                    <h4 className="font-medium text-sm text-foreground">{cl.title}</h4>
                     <p className="text-xs text-muted-foreground mt-0.5">{cl.companyName} · {cl.jobTitle}</p>
                   </div>
                   <div className="flex gap-2">
@@ -563,13 +573,13 @@ export default function DashboardPage() {
                         deleteCoverLetter(cl.id);
                         setCoverLetters(getStoredCoverLetters());
                       }}
-                      className="p-1.5 text-muted-foreground hover:text-destructive"
+                      className="p-1.5 text-muted-foreground hover:text-destructive transition-colors duration-150"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-4 h-4" strokeWidth={1.5} />
                     </button>
                     <Link
                       href={`/cover-letter?id=${cl.id}`}
-                      className="px-3 py-1.5 rounded-lg bg-secondary text-xs font-semibold hover:bg-secondary/80"
+                      className="h-8 px-3 rounded-lg bg-secondary text-xs font-medium flex items-center hover:bg-secondary/80 transition-colors duration-150"
                     >
                       Open
                     </Link>
@@ -583,28 +593,31 @@ export default function DashboardPage() {
 
       {/* GitHub Project Import Modal */}
       {githubModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-card text-card-foreground w-full max-w-md rounded-2xl border border-border shadow-2xl p-6 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center">
-                <Github className="w-4 h-4" />
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <Github className="w-5 h-5 text-foreground" strokeWidth={1.5} />
+                <div>
+                  <h3 className="font-medium text-base">Import GitHub project</h3>
+                  <p className="text-xs text-muted-foreground">Add a repository to your active resume.</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-bold text-base">Import GitHub Project</h3>
-                <p className="text-xs text-muted-foreground">Extract repo details into your active resume.</p>
-              </div>
+              <button onClick={() => setGithubModalOpen(false)} className="p-1 text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" strokeWidth={1.5} />
+              </button>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-foreground mb-1">
-                GitHub Repository URL or "username/repo"
+              <label className="block text-xs font-medium text-foreground mb-1">
+                Repository URL or owner/repo
               </label>
               <input
                 type="text"
                 value={githubRepoUrl}
                 onChange={(e) => setGithubRepoUrl(e.target.value)}
-                placeholder="e.g. rohansharma/campus-connect or vercel/next.js"
-                className="w-full text-xs px-3 py-2 rounded-xl border border-input bg-background outline-none focus:ring-2 focus:ring-primary/20"
+                placeholder="rohansharma/campus-connect"
+                className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background outline-none focus:ring-2 focus:ring-ring/20"
               />
             </div>
 
@@ -612,7 +625,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => setGithubModalOpen(false)}
-                className="text-xs px-4 py-2 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
+                className="text-xs h-8 px-3 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
               >
                 Cancel
               </button>
@@ -620,9 +633,9 @@ export default function DashboardPage() {
                 type="button"
                 onClick={handleImportGitHubRepo}
                 disabled={githubLoading || !githubRepoUrl.trim()}
-                className="text-xs px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold disabled:opacity-40"
+                className="text-xs h-8 px-4 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-40"
               >
-                {githubLoading ? "Extracting Repo..." : "Import into Resume"}
+                {githubLoading ? "Importing..." : "Import project"}
               </button>
             </div>
           </div>
@@ -631,35 +644,33 @@ export default function DashboardPage() {
 
       {/* AI Interview Prep Modal */}
       {interviewPrepOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-card text-card-foreground w-full max-w-2xl rounded-3xl border border-border shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-card text-card-foreground w-full max-w-2xl rounded-2xl border border-border shadow-2xl flex flex-col max-h-[85vh] overflow-hidden">
             <div className="p-6 border-b border-border flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
-                  AI Career Coach
-                </span>
-                <h3 className="font-bold text-lg text-foreground mt-0.5">
-                  Interview Preparation Questions & Frameworks
+                <span className="text-xs font-medium text-primary">Interview prep</span>
+                <h3 className="font-medium text-lg text-foreground mt-0.5">
+                  Role-specific questions and evaluation notes
                 </h3>
               </div>
               <button onClick={() => setInterviewPrepOpen(false)} className="p-1 rounded-lg hover:bg-secondary text-muted-foreground">
-                ✕
+                <X className="w-4 h-4" strokeWidth={1.5} />
               </button>
             </div>
 
             <div className="p-6 overflow-y-auto space-y-4">
               {interviewQuestions.map((iq, i) => (
-                <div key={i} className="p-4 rounded-xl border border-border bg-secondary/20 space-y-2 text-xs">
+                <div key={i} className="p-4 rounded-xl border border-border bg-background space-y-2 text-xs">
                   <div className="flex justify-between items-start gap-2">
-                    <span className="font-bold text-foreground">
-                      Q{i + 1}: {iq.q}
+                    <span className="font-medium text-foreground">
+                      {i + 1}. {iq.q}
                     </span>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary whitespace-nowrap">
+                    <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-secondary text-muted-foreground whitespace-nowrap">
                       {iq.type}
                     </span>
                   </div>
-                  <div className="pt-2 border-t border-border/60 text-muted-foreground">
-                    <strong className="text-foreground">Recruiter Evaluation: </strong>
+                  <div className="pt-2 border-t border-border text-muted-foreground">
+                    <strong className="font-medium text-foreground">What interviewers look for: </strong>
                     {iq.answerKey}
                   </div>
                 </div>
@@ -671,40 +682,45 @@ export default function DashboardPage() {
 
       {/* Add Job Application Modal */}
       {jobModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-card text-card-foreground w-full max-w-md rounded-2xl border border-border shadow-2xl p-6 space-y-4">
-            <h3 className="font-bold text-base">Track New Job Application</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-medium text-base">Add job application</h3>
+              <button onClick={() => setJobModalOpen(false)} className="p-1 text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+            </div>
 
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold mb-1">Company Name *</label>
+                <label className="block text-xs font-medium mb-1">Company</label>
                 <input
                   type="text"
                   value={newJobCompany}
                   onChange={(e) => setNewJobCompany(e.target.value)}
-                  placeholder="e.g. Google or Atlassian"
-                  className="w-full text-xs px-3 py-2 rounded-xl border border-input bg-background"
+                  placeholder="Stripe"
+                  className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold mb-1">Job Title / Role *</label>
+                <label className="block text-xs font-medium mb-1">Role</label>
                 <input
                   type="text"
                   value={newJobRole}
                   onChange={(e) => setNewJobRole(e.target.value)}
-                  placeholder="e.g. Full-Stack Engineer"
-                  className="w-full text-xs px-3 py-2 rounded-xl border border-input bg-background"
+                  placeholder="Full-Stack Engineer"
+                  className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold mb-1">Status</label>
+                  <label className="block text-xs font-medium mb-1">Status</label>
                   <select
                     value={newJobStatus}
-                    onChange={(e) => setNewJobStatus(e.target.value as any)}
-                    className="w-full text-xs px-3 py-2 rounded-xl border border-input bg-background"
+                    onChange={(e) => setNewJobStatus(e.target.value as JobApplication["status"])}
+                    className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background"
                   >
                     <option value="wishlist">Wishlist</option>
                     <option value="applied">Applied</option>
@@ -713,25 +729,25 @@ export default function DashboardPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold mb-1">Location</label>
+                  <label className="block text-xs font-medium mb-1">Location</label>
                   <input
                     type="text"
                     value={newJobLocation}
                     onChange={(e) => setNewJobLocation(e.target.value)}
-                    placeholder="Remote / Bengaluru"
-                    className="w-full text-xs px-3 py-2 rounded-xl border border-input bg-background"
+                    placeholder="Remote"
+                    className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold mb-1">Interview Notes / Salary</label>
+                <label className="block text-xs font-medium mb-1">Notes</label>
                 <textarea
                   rows={2}
                   value={newJobNotes}
                   onChange={(e) => setNewJobNotes(e.target.value)}
-                  placeholder="e.g. Applied via referral, round 1 technical interview..."
-                  className="w-full text-xs p-2 rounded-xl border border-input bg-background resize-none"
+                  placeholder="Referral or interview notes"
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
                 />
               </div>
             </div>
@@ -740,7 +756,7 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={() => setJobModalOpen(false)}
-                className="text-xs px-4 py-2 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
+                className="text-xs h-8 px-3 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
               >
                 Cancel
               </button>
@@ -748,9 +764,9 @@ export default function DashboardPage() {
                 type="button"
                 onClick={handleCreateJobApp}
                 disabled={!newJobCompany || !newJobRole}
-                className="text-xs px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold disabled:opacity-40"
+                className="text-xs h-8 px-4 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-40"
               >
-                Save Application
+                Save
               </button>
             </div>
           </div>
@@ -759,28 +775,33 @@ export default function DashboardPage() {
 
       {/* Resume Importer Modal */}
       {importModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="bg-card text-card-foreground w-full max-w-lg rounded-2xl border border-border shadow-2xl p-6 space-y-4">
-            <div>
-              <h3 className="font-bold text-base">Import Existing Resume</h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Paste your current resume text or raw profile. Our parser will extract contact info, job roles, skills, and projects automatically.
-              </p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-base">Import resume text</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Paste existing resume text to extract contact details and skills into a draft.
+                </p>
+              </div>
+              <button onClick={() => setImportModalOpen(false)} className="p-1 text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" strokeWidth={1.5} />
+              </button>
             </div>
 
             <textarea
               rows={8}
               value={importText}
               onChange={(e) => setImportText(e.target.value)}
-              placeholder="Paste your resume text here (e.g. John Doe, john@example.com, Experience at Google...)"
-              className="w-full text-xs p-3 rounded-xl border border-input bg-background focus:ring-2 focus:ring-primary/20 outline-none resize-none"
+              placeholder="Paste resume text here"
+              className="w-full text-xs p-3 rounded-lg border border-input bg-background focus:ring-2 focus:ring-ring/20 outline-none resize-none"
             />
 
             <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => setImportModalOpen(false)}
-                className="text-xs px-4 py-2 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
+                className="text-xs h-8 px-3 rounded-lg border border-border hover:bg-secondary text-muted-foreground"
               >
                 Cancel
               </button>
@@ -788,9 +809,9 @@ export default function DashboardPage() {
                 type="button"
                 onClick={handleExecuteImport}
                 disabled={isImporting || !importText.trim()}
-                className="text-xs px-4 py-2 rounded-lg bg-primary text-primary-foreground font-semibold disabled:opacity-40 hover:opacity-95"
+                className="text-xs h-8 px-4 rounded-lg bg-primary text-primary-foreground font-medium disabled:opacity-40 hover:opacity-95"
               >
-                {isImporting ? "Parsing Resume..." : "Parse & Open in Builder"}
+                {isImporting ? "Parsing..." : "Parse and open"}
               </button>
             </div>
           </div>

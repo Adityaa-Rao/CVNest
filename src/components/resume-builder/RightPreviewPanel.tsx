@@ -100,7 +100,7 @@ export const RightPreviewPanel: React.FC<RightPreviewPanelProps> = ({ resume, on
           >
             <ZoomOut className="w-4 h-4" />
           </button>
-          <span className="text-[11px] font-mono text-muted-foreground w-9 text-center">
+          <span className="text-[11px] font-mono text-muted-foreground w-10 text-center tabular-nums">
             {Math.round(zoom * 100)}%
           </span>
           <button
@@ -149,9 +149,9 @@ export const RightPreviewPanel: React.FC<RightPreviewPanelProps> = ({ resume, on
             type="button"
             onClick={handleDownloadPDF}
             disabled={isExporting}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:opacity-95 shadow-sm active:scale-95 transition-all ml-1"
+            className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150 ml-1"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5" strokeWidth={1.5} />
             <span>{isExporting ? "Rendering..." : "PDF"}</span>
           </button>
         </div>

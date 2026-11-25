@@ -11,15 +11,9 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
-  Check,
   ArrowRight,
   ZoomIn,
   ZoomOut,
-  Palette,
-  Type,
-  Layout,
-  Maximize2,
 } from "lucide-react";
 
 interface TemplatePreviewModalProps {
@@ -38,16 +32,15 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
   onSelectTemplate,
 }) => {
   const router = useRouter();
-  if (!isOpen) return null;
-
   const currentIndex = allTemplates.findIndex((t) => t.id === template.id);
   const [zoom, setZoom] = useState(0.85);
-  const [selectedColor, setSelectedColor] = useState("#4f46e5");
+  const [selectedColor, setSelectedColor] = useState("#155eef");
   const [selectedFont, setSelectedFont] = useState<any>("inter");
-  const [selectedSpacing, setSelectedSpacing] = useState<any>("normal");
   const [previewSample, setPreviewSample] = useState<"fresher" | "experienced">(
     template.category === "fresher" ? "fresher" : "experienced"
   );
+
+  if (!isOpen) return null;
 
   const handlePrev = () => {
     const prevIdx = (currentIndex - 1 + allTemplates.length) % allTemplates.length;
@@ -59,7 +52,6 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
     onSelectTemplate(allTemplates[nextIdx].id);
   };
 
-  // Base sample data configured with current live customizations
   const baseSample = previewSample === "fresher" ? SAMPLE_FRESHER_RESUME : SAMPLE_EXPERIENCED_RESUME;
   const configuredResume: ResumeData = {
     ...baseSample,
@@ -68,7 +60,6 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
       templateId: template.id,
       accentColor: selectedColor,
       fontFamily: selectedFont,
-      spacing: selectedSpacing,
     },
   };
 
@@ -83,7 +74,6 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
           templateId: template.id,
           accentColor: selectedColor,
           fontFamily: selectedFont,
-          spacing: selectedSpacing,
         },
       };
       saveResume(updated);
@@ -94,95 +84,92 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-card text-card-foreground w-full max-w-6xl h-[92vh] rounded-3xl border border-border shadow-2xl flex flex-col overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/60 backdrop-blur-sm">
+      <div className="bg-card text-card-foreground w-full max-w-6xl h-[92vh] rounded-2xl border border-border shadow-2xl flex flex-col overflow-hidden">
         {/* Top Header */}
-        <div className="px-6 py-4 border-b border-border flex items-center justify-between bg-card flex-shrink-0">
+        <div className="px-6 py-3.5 border-b border-border flex items-center justify-between bg-card flex-shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+            <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">
               {template.categoryLabel}
             </span>
-            <h2 className="font-bold text-lg text-foreground flex items-center gap-2">
+            <h2 className="font-medium text-base text-foreground flex items-center gap-2">
               {template.name}
               {template.atsScore && (
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-                  {template.atsScore}% ATS Score
+                <span className="text-xs font-mono text-muted-foreground tabular-nums">
+                  {template.atsScore}% ATS
                 </span>
               )}
             </h2>
           </div>
 
-          {/* Navigation & Close */}
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrev}
-              title="Previous Template"
-              className="p-1.5 rounded-lg border border-border hover:bg-secondary text-muted-foreground hover:text-foreground"
+              title="Previous template"
+              className="p-1.5 rounded-lg border border-border hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-4 h-4" strokeWidth={1.5} />
             </button>
-            <span className="text-xs font-mono text-muted-foreground">
+            <span className="text-xs font-mono text-muted-foreground tabular-nums">
               {currentIndex + 1} / {allTemplates.length}
             </span>
             <button
               onClick={handleNext}
-              title="Next Template"
-              className="p-1.5 rounded-lg border border-border hover:bg-secondary text-muted-foreground hover:text-foreground"
+              title="Next template"
+              className="p-1.5 rounded-lg border border-border hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
             </button>
 
             <div className="h-4 w-px bg-border mx-1" />
 
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground"
+              aria-label="Close preview"
+              className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors duration-150"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </div>
         </div>
 
-        {/* 2-Column Body: Customization Panel on Left, Scaled Preview on Right */}
+        {/* 2-Column Body */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
-          {/* Controls & Insights (4 cols) */}
-          <div className="lg:col-span-4 border-r border-border p-6 overflow-y-auto space-y-6 bg-secondary/10">
-            <div>
-              <h4 className="font-bold text-xs uppercase tracking-wider text-muted-foreground mb-1">
-                Template Description
-              </h4>
-              <p className="text-xs text-muted-foreground leading-relaxed">{template.description}</p>
+          {/* Controls & Details (4 cols) */}
+          <div className="lg:col-span-4 border-r border-border p-6 overflow-y-auto space-y-6 bg-background">
+            <div className="space-y-1.5">
+              <h4 className="font-medium text-xs text-muted-foreground">Description</h4>
+              <p className="text-xs text-foreground leading-relaxed">{template.description}</p>
             </div>
 
-            {/* Layout characteristics */}
             <div className="p-3.5 rounded-xl border border-border bg-card space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Layout Type:</span>
-                <span className="font-semibold text-foreground">{template.layoutType || "Single Column"}</span>
+                <span className="text-muted-foreground">Layout</span>
+                <span className="font-medium text-foreground">{template.layoutType || "Single Column"}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">ATS Compatibility:</span>
-                <span className="font-semibold text-emerald-600">{template.atsScore || 96}% (Verified)</span>
+                <span className="text-muted-foreground">ATS score</span>
+                <span className="font-mono text-foreground tabular-nums">{template.atsScore || 96}%</span>
               </div>
               {template.recommendedFor && (
-                <div className="pt-1 border-t border-border/60">
-                  <span className="text-muted-foreground block text-[11px] mb-0.5">Best Suited For:</span>
+                <div className="pt-2 border-t border-border space-y-0.5">
+                  <span className="text-muted-foreground block text-[11px]">Suited for</span>
                   <span className="font-medium text-foreground">{template.recommendedFor}</span>
                 </div>
               )}
             </div>
 
-            {/* In-Preview Customization: Accent Colors */}
+            {/* Accent Colors */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-foreground">Accent Color</label>
+              <label className="block text-xs font-medium text-foreground">Accent color</label>
               <div className="flex flex-wrap gap-2">
                 {COLOR_PALETTES.map((color) => (
                   <button
                     key={color.value}
                     onClick={() => setSelectedColor(color.value)}
                     title={color.name}
-                    className={`w-6 h-6 rounded-full transition-transform ${
-                      selectedColor === color.value ? "scale-125 ring-2 ring-primary ring-offset-2" : "hover:scale-110"
+                    className={`w-6 h-6 rounded-full transition-transform duration-150 ${
+                      selectedColor === color.value ? "ring-2 ring-primary ring-offset-2" : ""
                     }`}
                     style={{ backgroundColor: color.value }}
                   />
@@ -190,18 +177,18 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
               </div>
             </div>
 
-            {/* In-Preview Customization: Font Family */}
+            {/* Font Family */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-foreground">Font Family</label>
+              <label className="block text-xs font-medium text-foreground">Font family</label>
               <div className="grid grid-cols-2 gap-1.5">
                 {FONT_OPTIONS.map((font) => (
                   <button
                     key={font.id}
                     onClick={() => setSelectedFont(font.id)}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg border text-left truncate transition-all ${
+                    className={`text-xs h-8 px-2.5 rounded-lg border text-left truncate transition-colors duration-150 ${
                       selectedFont === font.id
-                        ? "bg-primary text-primary-foreground border-primary font-semibold shadow-xs"
-                        : "border-border text-muted-foreground hover:bg-secondary"
+                        ? "bg-primary text-primary-foreground border-primary font-medium"
+                        : "border-border text-muted-foreground hover:text-foreground hover:bg-secondary"
                     }`}
                   >
                     {font.name.split(" ")[0]}
@@ -211,56 +198,58 @@ export const TemplatePreviewModal: React.FC<TemplatePreviewModalProps> = ({
             </div>
 
             {/* Sample Data Switcher */}
-            <div className="space-y-1.5 pt-2 border-t border-border">
-              <label className="block text-xs font-bold text-foreground">Preview Sample</label>
+            <div className="space-y-2 pt-2 border-t border-border">
+              <label className="block text-xs font-medium text-foreground">Sample data</label>
               <div className="flex gap-2 text-xs">
                 <button
                   onClick={() => setPreviewSample("fresher")}
-                  className={`flex-1 py-1.5 rounded-lg border font-medium ${
-                    previewSample === "fresher" ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground"
+                  className={`flex-1 h-8 rounded-lg border font-medium transition-colors duration-150 ${
+                    previewSample === "fresher"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  🎓 Fresher / Student
+                  Fresher
                 </button>
                 <button
                   onClick={() => setPreviewSample("experienced")}
-                  className={`flex-1 py-1.5 rounded-lg border font-medium ${
-                    previewSample === "experienced" ? "bg-primary text-primary-foreground border-primary" : "border-border text-muted-foreground"
+                  className={`flex-1 h-8 rounded-lg border font-medium transition-colors duration-150 ${
+                    previewSample === "experienced"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  💼 Experienced
+                  Experienced
                 </button>
               </div>
             </div>
 
-            {/* Primary Action Button */}
-            <div className="pt-4">
+            <div className="pt-2">
               <button
                 onClick={handleChooseTemplate}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:opacity-95 shadow-md active:scale-98 transition-all"
+                className="w-full flex items-center justify-center gap-2 h-10 rounded-lg bg-primary text-primary-foreground font-medium text-xs hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
               >
-                <span>Choose This Template & Edit</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Choose this template</span>
+                <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
               </button>
             </div>
           </div>
 
-          {/* Right Live Preview Canvas (8 cols) */}
-          <div className="lg:col-span-8 bg-zinc-100 dark:bg-zinc-950 flex flex-col overflow-hidden relative">
-            {/* Zoom toolbar */}
-            <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-card/90 backdrop-blur border border-border p-1 rounded-xl shadow-md text-xs">
+          {/* Right Live Preview Canvas */}
+          <div className="lg:col-span-8 bg-secondary/40 flex flex-col overflow-hidden relative">
+            <div className="absolute top-4 right-4 z-10 flex items-center gap-1 bg-card border border-border p-1 rounded-lg shadow-sm text-xs">
               <button
                 onClick={() => setZoom((z) => Math.max(0.4, Number((z - 0.1).toFixed(2))))}
-                className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+                className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
               >
-                <ZoomOut className="w-3.5 h-3.5" />
+                <ZoomOut className="w-3.5 h-3.5" strokeWidth={1.5} />
               </button>
-              <span className="font-mono text-[11px] px-1">{Math.round(zoom * 100)}%</span>
+              <span className="font-mono text-[11px] px-1 tabular-nums">{Math.round(zoom * 100)}%</span>
               <button
                 onClick={() => setZoom((z) => Math.min(1.4, Number((z + 0.1).toFixed(2))))}
-                className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground"
+                className="p-1.5 rounded hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors duration-150"
               >
-                <ZoomIn className="w-3.5 h-3.5" />
+                <ZoomIn className="w-3.5 h-3.5" strokeWidth={1.5} />
               </button>
             </div>
 

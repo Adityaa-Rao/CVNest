@@ -68,7 +68,8 @@ export async function parseResumeFromText(rawText: string): Promise<Partial<Resu
   ];
 
   const foundSkills = knownSkills.filter((sk) => {
-    const reg = new RegExp(`\\b${sk.replace(".", "\\.")}\\b`, "i");
+    const escaped = sk.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const reg = new RegExp(`(?:^|[^a-z0-9])${escaped}(?=$|[^a-z0-9])`, "i");
     return reg.test(rawText);
   });
 

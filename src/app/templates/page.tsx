@@ -12,20 +12,11 @@ import { Footer } from "@/components/layout/Footer";
 import { getStoredResumes, saveResume, getUserPreferences, saveUserPreferences } from "@/lib/storage";
 import {
   Search,
-  Filter,
-  CheckCircle2,
-  Sparkles,
   ArrowRight,
-  ShieldCheck,
-  GraduationCap,
   Layers,
   Heart,
   Eye,
-  ArrowUpDown,
-  Check,
-  X,
 } from "lucide-react";
-import Link from "next/link";
 
 export default function TemplatesGalleryPage() {
   const router = useRouter();
@@ -60,7 +51,7 @@ export default function TemplatesGalleryPage() {
       setCompareList(compareList.filter((item) => item !== id));
     } else {
       if (compareList.length >= 3) {
-        alert("You can compare up to 3 templates simultaneously.");
+        alert("You can compare up to 3 templates at once.");
         return;
       }
       setCompareList([...compareList, id]);
@@ -85,22 +76,18 @@ export default function TemplatesGalleryPage() {
     }
   };
 
-  // Filter Categories
   const categoryFilters = [
-    { id: "all", label: "All Templates" },
+    { id: "all", label: "All" },
     { id: "ats", label: "ATS-Friendly" },
     { id: "fresher", label: "Fresher & Student" },
     { id: "modern", label: "Modern" },
     { id: "creative", label: "Creative" },
   ];
 
-  // Filtering Logic
   const filtered = RESUME_TEMPLATES.filter((tmpl) => {
     const matchesCat =
       selectedCategory === "all" ||
-      tmpl.category === selectedCategory ||
-      (selectedCategory === "fresher" && tmpl.category === "fresher") ||
-      (selectedCategory === "ats" && tmpl.category === "ats");
+      tmpl.category === selectedCategory;
 
     const matchesSearch =
       tmpl.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -111,7 +98,6 @@ export default function TemplatesGalleryPage() {
     return matchesCat && matchesSearch;
   });
 
-  // Sorting Logic
   const sorted = [...filtered].sort((a, b) => {
     if (sortBy === "popular") {
       return (b.isPopular ? 1 : 0) - (a.isPopular ? 1 : 0);
@@ -128,33 +114,28 @@ export default function TemplatesGalleryPage() {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16 space-y-10">
-        {/* Header Hero */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold border border-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>20 Genuine Architectural Resume Templates</span>
-          </div>
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">
-            Original Templates Engineered for Every Career Milestone
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16 space-y-8">
+        {/* Header */}
+        <div className="max-w-2xl space-y-2">
+          <h1 className="text-3xl md:text-4xl font-medium tracking-[-0.02em] text-foreground">
+            Resume templates
           </h1>
-          <p className="text-muted-foreground text-xs md:text-sm leading-relaxed max-w-2xl mx-auto">
-            From single-column ATS layouts verified for Workday & Taleo to specialized Indian BTech engineering formats and creative portfolio layouts.
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            20 layouts across ATS-friendly, modern, creative, and student categories. Switch anytime without losing content.
           </p>
         </div>
 
         {/* Filter, Search & Sort Toolbar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-border pb-6">
-          {/* Category Tabs */}
-          <div className="flex flex-wrap gap-2 w-full md:w-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-border pb-5">
+          <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
             {categoryFilters.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`text-xs px-3.5 py-2 rounded-xl font-medium transition-all ${
+                className={`text-xs h-8 px-3 rounded-lg font-medium transition-colors duration-150 ${
                   selectedCategory === cat.id
-                    ? "bg-primary text-primary-foreground font-semibold shadow-sm"
-                    : "bg-secondary/60 hover:bg-secondary text-muted-foreground hover:text-foreground"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {cat.label}
@@ -162,29 +143,27 @@ export default function TemplatesGalleryPage() {
             ))}
           </div>
 
-          {/* Search & Sort Controls */}
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            {/* Search Input */}
-            <div className="relative flex-1 md:w-64">
-              <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
+          <div className="flex items-center gap-2.5 w-full md:w-auto">
+            <div className="relative flex-1 md:w-60">
+              <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" strokeWidth={1.5} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by name, role, tech..."
-                className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-input bg-card text-foreground focus:ring-2 focus:ring-primary/20 outline-none"
+                placeholder="Search templates"
+                className="w-full h-9 pl-9 pr-3 text-xs rounded-lg border border-input bg-card text-foreground focus:ring-2 focus:ring-ring/20 outline-none"
               />
             </div>
 
-            {/* Sort Dropdown */}
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="text-xs px-3 py-2 rounded-xl border border-input bg-card text-foreground focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer"
+              onChange={(e) => setSortBy(e.target.value as "popular" | "newest" | "alpha")}
+              aria-label="Sort templates"
+              className="h-9 text-xs px-3 rounded-lg border border-input bg-card text-foreground focus:ring-2 focus:ring-ring/20 outline-none cursor-pointer"
             >
-              <option value="popular">Most Popular</option>
-              <option value="newest">Newest First</option>
-              <option value="alpha">Alphabetical</option>
+              <option value="popular">Popular</option>
+              <option value="newest">Newest</option>
+              <option value="alpha">A–Z</option>
             </select>
           </div>
         </div>
@@ -198,87 +177,84 @@ export default function TemplatesGalleryPage() {
             return (
               <div
                 key={tmpl.id}
-                className="group rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 hover:shadow-xl transition-all flex flex-col justify-between"
+                className="group rounded-xl border border-border bg-card overflow-hidden hover:border-foreground/25 transition-colors duration-150 flex flex-col justify-between"
               >
-                {/* Visual Thumbnail Container */}
-                <div className="p-4 bg-secondary/30 border-b border-border relative">
-                  {/* Top Badges & Actions */}
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-background/90 text-foreground border shadow-xs">
+                {/* Thumbnail Area */}
+                <div className="p-4 bg-secondary/40 border-b border-border">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] font-medium text-muted-foreground">
                       {tmpl.categoryLabel}
                     </span>
 
                     <div className="flex items-center gap-1.5">
-                      {/* Compare Checkbox */}
                       <button
                         type="button"
                         onClick={(e) => toggleCompare(tmpl.id, e)}
-                        title={isCompared ? "Remove from comparison" : "Add to side-by-side comparison"}
-                        className={`text-[10px] px-2 py-0.5 rounded border transition-all ${
+                        title={isCompared ? "Remove from comparison" : "Compare"}
+                        className={`text-[11px] h-6 px-2 rounded-md border transition-colors duration-150 ${
                           isCompared
-                            ? "bg-primary text-primary-foreground border-primary font-bold"
-                            : "bg-background text-muted-foreground hover:border-primary"
+                            ? "bg-primary text-primary-foreground border-primary font-medium"
+                            : "bg-card text-muted-foreground border-border hover:text-foreground"
                         }`}
                       >
-                        {isCompared ? "✓ Compared" : "+ Compare"}
+                        {isCompared ? "Compared" : "Compare"}
                       </button>
 
-                      {/* Favorite Button */}
                       <button
                         type="button"
                         onClick={(e) => toggleFavorite(tmpl.id, e)}
-                        className={`p-1.5 rounded-full bg-background border transition-colors ${
-                          isFav ? "text-rose-500 fill-rose-500 border-rose-300" : "text-muted-foreground hover:text-foreground"
+                        aria-label={isFav ? "Remove from favorites" : "Add to favorites"}
+                        className={`p-1 rounded-md bg-card border border-border transition-colors duration-150 ${
+                          isFav ? "text-rose-600 border-rose-300" : "text-muted-foreground hover:text-foreground"
                         }`}
                       >
-                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-rose-500" : ""}`} />
+                        <Heart className={`w-3.5 h-3.5 ${isFav ? "fill-rose-600" : ""}`} strokeWidth={1.5} />
                       </button>
                     </div>
                   </div>
 
-                  {/* Realistic Miniature Document Thumbnail */}
+                  {/* Miniature Resume Document */}
                   <div
                     onClick={() => setPreviewTemplate(tmpl)}
-                    className="cursor-pointer max-w-[210px] mx-auto shadow-md rounded-lg overflow-hidden group-hover:scale-105 transition-transform duration-200"
+                    className="cursor-pointer max-w-[200px] mx-auto shadow-[0_1px_3px_rgba(0,0,0,0.08)] rounded-lg overflow-hidden"
                   >
                     <TemplateThumbnail template={tmpl} />
                   </div>
                 </div>
 
-                {/* Card Content & Info */}
-                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                {/* Card Content */}
+                <div className="p-4 flex-1 flex flex-col justify-between space-y-4">
                   <div>
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-medium text-sm text-foreground">
                         {tmpl.name}
                       </h3>
                       {tmpl.atsScore && (
-                        <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.2 rounded border border-emerald-500/20">
+                        <span className="text-[11px] font-mono text-muted-foreground tabular-nums">
                           {tmpl.atsScore}% ATS
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed line-clamp-2">
                       {tmpl.description}
                     </p>
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="pt-3 border-t border-border flex items-center gap-2">
                     <button
                       onClick={() => setPreviewTemplate(tmpl)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border bg-background hover:bg-secondary text-xs font-semibold text-foreground transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-lg border border-border bg-background hover:bg-secondary text-xs font-medium text-foreground transition-colors duration-150"
                     >
-                      <Eye className="w-3.5 h-3.5 text-muted-foreground" />
+                      <Eye className="w-3.5 h-3.5 text-muted-foreground" strokeWidth={1.5} />
                       <span>Preview</span>
                     </button>
 
                     <button
                       onClick={() => handleApplyTemplate(tmpl.id)}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:opacity-95 shadow-sm active:scale-98 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 h-8 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
                     >
                       <span>Use</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
                     </button>
                   </div>
                 </div>
@@ -288,38 +264,38 @@ export default function TemplatesGalleryPage() {
         </div>
       </main>
 
-      {/* Sticky Bottom Comparison Drawer (if templates are selected) */}
+      {/* Sticky Bottom Comparison Bar */}
       {compareList.length > 0 && (
-        <div className="fixed bottom-4 inset-x-4 max-w-2xl mx-auto z-40 p-3.5 rounded-2xl bg-card border border-primary/40 shadow-2xl backdrop-blur-md flex items-center justify-between gap-4 animate-in slide-in-from-bottom-4">
+        <div className="fixed bottom-4 inset-x-4 max-w-xl mx-auto z-40 p-3 rounded-xl bg-card border border-border shadow-[0_8px_24px_rgba(0,0,0,0.12)] flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-xs">
+            <span className="w-7 h-7 rounded-lg bg-secondary text-foreground flex items-center justify-center font-mono text-xs tabular-nums">
               {compareList.length}
             </span>
             <div>
-              <div className="font-bold text-xs text-foreground">Compare Templates</div>
-              <div className="text-[11px] text-muted-foreground">Up to 3 templates side-by-side</div>
+              <div className="font-medium text-xs text-foreground">Compare templates</div>
+              <div className="text-[11px] text-muted-foreground">Select up to 3 layouts</div>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCompareList([])}
-              className="text-xs text-muted-foreground hover:text-foreground px-2 py-1"
+              className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 transition-colors duration-150"
             >
               Clear
             </button>
             <button
               onClick={() => setCompareModalOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-semibold text-xs hover:opacity-95 shadow-md active:scale-98"
+              className="flex items-center gap-1.5 h-8 px-3.5 rounded-lg bg-primary text-primary-foreground font-medium text-xs hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150 tabular-nums"
             >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Compare Selected ({compareList.length})</span>
+              <Layers className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Compare ({compareList.length})</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Interactive Full Preview Modal */}
+      {/* Preview Modal */}
       {previewTemplate && (
         <TemplatePreviewModal
           template={previewTemplate}

@@ -4,50 +4,53 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    /* Ink-tinted editorial neutral ramp (light) */
+    --background: 220 20% 98%;       /* #f8f9fb */
+    --foreground: 221 39% 11%;       /* #111827 */
+    --card: 0 0% 100%;               /* #ffffff */
+    --card-foreground: 221 39% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 234 89% 59%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 215 25% 94%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 215 25% 94%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 215 25% 94%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 234 89% 59%;
-    --radius: 0.625rem;
-    --font-inter: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-jakarta: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --popover-foreground: 221 39% 11%;
+    --primary: 221 83% 48%;          /* #155eef - crisp cobalt with >4.5:1 contrast */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 18% 94%;        /* #eceff4 */
+    --secondary-foreground: 221 39% 11%;
+    --muted: 220 18% 94%;
+    --muted-foreground: 218 14% 44%; /* #606a7c - >=4.5:1 on light */
+    --accent: 220 18% 94%;
+    --accent-foreground: 221 39% 11%;
+    --destructive: 0 72% 51%;        /* #dc2626 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 20% 90%;           /* quiet hairline */
+    --input: 220 20% 88%;
+    --ring: 221 83% 48%;
+    --radius: 0.5rem;                /* 8px base control radius */
+    --font-inter: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-jakarta: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --ease-unslop: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 7%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 7%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 234 89% 65%;
-    --primary-foreground: 224 71% 4%;
-    --secondary: 215 28% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 28% 17%;
-    --muted-foreground: 218 11% 65%;
-    --accent: 215 28% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 215 28% 18%;
-    --input: 215 28% 18%;
-    --ring: 234 89% 65%;
+    /* Ink-tinted neutral ramp (dark) */
+    --background: 227 29% 6%;        /* #0b0d14 */
+    --foreground: 223 30% 95%;       /* #eef0f5 */
+    --card: 224 24% 9%;              /* #11141c */
+    --card-foreground: 223 30% 95%;
+    --popover: 224 24% 9%;
+    --popover-foreground: 223 30% 95%;
+    --primary: 217 91% 60%;          /* #3b82f6 */
+    --primary-foreground: 227 29% 6%;
+    --secondary: 223 21% 13%;        /* #1a1e28 */
+    --secondary-foreground: 223 30% 95%;
+    --muted: 223 21% 13%;
+    --muted-foreground: 222 14% 58%; /* #868fa3 */
+    --accent: 223 21% 13%;
+    --accent-foreground: 223 30% 95%;
+    --destructive: 0 68% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 223 20% 16%;
+    --input: 223 20% 18%;
+    --ring: 217 91% 60%;
   }
 }
 
@@ -61,6 +64,14 @@
   }
 }
 
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.ease-unslop {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 /* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
@@ -70,11 +81,11 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.4);
+  background: rgba(107, 116, 135, 0.35);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.7);
+  background: rgba(107, 116, 135, 0.6);
 }
 
 /* Print styling for crisp PDF export */

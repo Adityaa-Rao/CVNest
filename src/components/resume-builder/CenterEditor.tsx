@@ -1,7 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { ResumeData, ExperienceItem, EducationItem, ProjectItem, SkillCategory, InternshipItem, HackathonItem, CertificationItem, AchievementItem, LanguageItem } from "@/types/resume";
+import {
+  ResumeData,
+  ExperienceItem,
+  EducationItem,
+  ProjectItem,
+  SkillCategory,
+  InternshipItem,
+  HackathonItem,
+  CertificationItem,
+  AchievementItem,
+  PublicationItem,
+  LanguageItem,
+  VolunteerItem,
+  ExtracurricularItem,
+  AwardItem,
+  ReferenceItem,
+} from "@/types/resume";
 import { generateId } from "@/lib/utils";
 import { Plus, Trash2, Sparkles, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { AIModal } from "../ai-tools/AIModal";
@@ -772,6 +788,786 @@ export const CenterEditor: React.FC<CenterEditorProps> = ({ resume, activeSectio
             ))}
           </div>
         </section>
+      )}
+
+      {/* 8. INTERNSHIPS */}
+      {(activeSection === "internships" || activeSection === "all") && (
+        <section id="sec-internships" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Internships</h3>
+              <p className="text-xs text-muted-foreground">Industrial training, summer internships, and co-op roles.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newItem: InternshipItem = {
+                  id: generateId(),
+                  company: "",
+                  role: "",
+                  location: "",
+                  startDate: "",
+                  endDate: "",
+                  current: false,
+                  description: "",
+                  achievements: [""],
+                };
+                onChange({ ...resume, internships: [newItem, ...(resume.internships || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Internship
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            {(resume.internships || []).map((intern, idx) => (
+              <div key={intern.id} className="p-4 rounded-xl border border-border bg-card space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Internship #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, internships: resume.internships.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    value={intern.company}
+                    onChange={(e) => {
+                      const copy = [...resume.internships];
+                      copy[idx] = { ...copy[idx], company: e.target.value };
+                      onChange({ ...resume, internships: copy });
+                    }}
+                    placeholder="Company (e.g. TechNova Solutions)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={intern.role}
+                    onChange={(e) => {
+                      const copy = [...resume.internships];
+                      copy[idx] = { ...copy[idx], role: e.target.value };
+                      onChange({ ...resume, internships: copy });
+                    }}
+                    placeholder="Role (e.g. Software Engineering Intern)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={intern.startDate}
+                    onChange={(e) => {
+                      const copy = [...resume.internships];
+                      copy[idx] = { ...copy[idx], startDate: e.target.value };
+                      onChange({ ...resume, internships: copy });
+                    }}
+                    placeholder="Start Date (YYYY-MM)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    disabled={intern.current}
+                    value={intern.current ? "Present" : intern.endDate}
+                    onChange={(e) => {
+                      const copy = [...resume.internships];
+                      copy[idx] = { ...copy[idx], endDate: e.target.value };
+                      onChange({ ...resume, internships: copy });
+                    }}
+                    placeholder="End Date (YYYY-MM)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background disabled:opacity-50"
+                  />
+                </div>
+                <textarea
+                  rows={2}
+                  value={intern.description}
+                  onChange={(e) => {
+                    const copy = [...resume.internships];
+                    copy[idx] = { ...copy[idx], description: e.target.value };
+                    onChange({ ...resume, internships: copy });
+                  }}
+                  placeholder="Key responsibilities and achievements..."
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 9. CERTIFICATIONS */}
+      {(activeSection === "certifications" || activeSection === "all") && (
+        <section id="sec-certifications" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Certifications</h3>
+              <p className="text-xs text-muted-foreground">Industry credentials, cloud certifications, and verified courses.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newCert: CertificationItem = {
+                  id: generateId(),
+                  name: "",
+                  issuer: "",
+                  issueDate: "",
+                  credentialId: "",
+                  credentialUrl: "",
+                };
+                onChange({ ...resume, certifications: [newCert, ...(resume.certifications || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Certification
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            {(resume.certifications || []).map((cert, idx) => (
+              <div key={cert.id} className="p-4 rounded-xl border border-border bg-card space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Certification #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, certifications: resume.certifications.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    value={cert.name}
+                    onChange={(e) => {
+                      const copy = [...resume.certifications];
+                      copy[idx] = { ...copy[idx], name: e.target.value };
+                      onChange({ ...resume, certifications: copy });
+                    }}
+                    placeholder="Certification Name (e.g. AWS Cloud Practitioner)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={cert.issuer}
+                    onChange={(e) => {
+                      const copy = [...resume.certifications];
+                      copy[idx] = { ...copy[idx], issuer: e.target.value };
+                      onChange({ ...resume, certifications: copy });
+                    }}
+                    placeholder="Issuer (e.g. Amazon Web Services / Coursera)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={cert.issueDate}
+                    onChange={(e) => {
+                      const copy = [...resume.certifications];
+                      copy[idx] = { ...copy[idx], issueDate: e.target.value };
+                      onChange({ ...resume, certifications: copy });
+                    }}
+                    placeholder="Issue Date (YYYY-MM)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={cert.credentialId || ""}
+                    onChange={(e) => {
+                      const copy = [...resume.certifications];
+                      copy[idx] = { ...copy[idx], credentialId: e.target.value };
+                      onChange({ ...resume, certifications: copy });
+                    }}
+                    placeholder="Credential ID (optional)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 10. KEY ACHIEVEMENTS */}
+      {(activeSection === "achievements" || activeSection === "all") && (
+        <section id="sec-achievements" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Key Achievements</h3>
+              <p className="text-xs text-muted-foreground">Competitive programming ranks, scholarships, and notable milestones.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newAch: AchievementItem = { id: generateId(), title: "", date: "", issuer: "", description: "" };
+                onChange({ ...resume, achievements: [newAch, ...(resume.achievements || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Achievement
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.achievements || []).map((ach, idx) => (
+              <div key={ach.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Achievement #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, achievements: resume.achievements.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={ach.title}
+                    onChange={(e) => {
+                      const copy = [...resume.achievements];
+                      copy[idx] = { ...copy[idx], title: e.target.value };
+                      onChange({ ...resume, achievements: copy });
+                    }}
+                    placeholder="Title (e.g. LeetCode Knight 1890+)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={ach.date}
+                    onChange={(e) => {
+                      const copy = [...resume.achievements];
+                      copy[idx] = { ...copy[idx], date: e.target.value };
+                      onChange({ ...resume, achievements: copy });
+                    }}
+                    placeholder="Year / Date"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+                <textarea
+                  rows={2}
+                  value={ach.description}
+                  onChange={(e) => {
+                    const copy = [...resume.achievements];
+                    copy[idx] = { ...copy[idx], description: e.target.value };
+                    onChange({ ...resume, achievements: copy });
+                  }}
+                  placeholder="Brief context or measurable result"
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 11. PUBLICATIONS */}
+      {(activeSection === "publications" || activeSection === "all") && (
+        <section id="sec-publications" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Publications</h3>
+              <p className="text-xs text-muted-foreground">Research papers, IEEE/ACM articles, and technical whitepapers.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newPub: PublicationItem = { id: generateId(), title: "", publisher: "", date: "", authors: "", url: "", description: "" };
+                onChange({ ...resume, publications: [newPub, ...(resume.publications || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Publication
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.publications || []).map((pub, idx) => (
+              <div key={pub.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Publication #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, publications: resume.publications.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={pub.title}
+                    onChange={(e) => {
+                      const copy = [...resume.publications];
+                      copy[idx] = { ...copy[idx], title: e.target.value };
+                      onChange({ ...resume, publications: copy });
+                    }}
+                    placeholder="Paper Title"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={pub.publisher}
+                    onChange={(e) => {
+                      const copy = [...resume.publications];
+                      copy[idx] = { ...copy[idx], publisher: e.target.value };
+                      onChange({ ...resume, publications: copy });
+                    }}
+                    placeholder="Journal / Publisher (e.g. IEEE)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 12. LANGUAGES */}
+      {(activeSection === "languages" || activeSection === "all") && (
+        <section id="sec-languages" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Languages</h3>
+              <p className="text-xs text-muted-foreground">Spoken and written language proficiencies.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newLang: LanguageItem = { id: generateId(), language: "", proficiency: "Fluent" };
+                onChange({ ...resume, languages: [...(resume.languages || []), newLang] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Language
+            </button>
+          </div>
+          <div className="space-y-2.5">
+            {(resume.languages || []).map((lang, idx) => (
+              <div key={lang.id} className="p-3 rounded-xl border border-border bg-card flex items-center gap-3">
+                <input
+                  type="text"
+                  value={lang.language}
+                  onChange={(e) => {
+                    const copy = [...resume.languages];
+                    copy[idx] = { ...copy[idx], language: e.target.value };
+                    onChange({ ...resume, languages: copy });
+                  }}
+                  placeholder="Language (e.g. English, Hindi)"
+                  className="flex-1 text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                />
+                <select
+                  value={lang.proficiency}
+                  onChange={(e) => {
+                    const copy = [...resume.languages];
+                    copy[idx] = { ...copy[idx], proficiency: e.target.value as LanguageItem["proficiency"] };
+                    onChange({ ...resume, languages: copy });
+                  }}
+                  className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                >
+                  <option value="Native">Native</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Proficient">Proficient</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Basic">Basic</option>
+                </select>
+                <button
+                  type="button"
+                  onClick={() => onChange({ ...resume, languages: resume.languages.filter((_, i) => i !== idx) })}
+                  className="text-muted-foreground hover:text-destructive p-1.5"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 13. VOLUNTEER WORK */}
+      {(activeSection === "volunteer" || activeSection === "all") && (
+        <section id="sec-volunteer" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Volunteer Work</h3>
+              <p className="text-xs text-muted-foreground">Community leadership, student chapters, and non-profit contributions.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newVol: VolunteerItem = { id: generateId(), organization: "", role: "", startDate: "", endDate: "", current: false, description: "" };
+                onChange({ ...resume, volunteer: [newVol, ...(resume.volunteer || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Volunteer Role
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.volunteer || []).map((vol, idx) => (
+              <div key={vol.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Volunteer #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, volunteer: resume.volunteer.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={vol.organization}
+                    onChange={(e) => {
+                      const copy = [...resume.volunteer];
+                      copy[idx] = { ...copy[idx], organization: e.target.value };
+                      onChange({ ...resume, volunteer: copy });
+                    }}
+                    placeholder="Organization (e.g. GDSC VIT)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={vol.role}
+                    onChange={(e) => {
+                      const copy = [...resume.volunteer];
+                      copy[idx] = { ...copy[idx], role: e.target.value };
+                      onChange({ ...resume, volunteer: copy });
+                    }}
+                    placeholder="Role (e.g. Technical Lead)"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+                <textarea
+                  rows={2}
+                  value={vol.description}
+                  onChange={(e) => {
+                    const copy = [...resume.volunteer];
+                    copy[idx] = { ...copy[idx], description: e.target.value };
+                    onChange({ ...resume, volunteer: copy });
+                  }}
+                  placeholder="Impact and activities"
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 14. EXTRACURRICULARS */}
+      {(activeSection === "extracurricular" || activeSection === "all") && (
+        <section id="sec-extracurricular" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Extracurricular Activities</h3>
+              <p className="text-xs text-muted-foreground">Clubs, sports, debates, and campus initiatives.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newEx: ExtracurricularItem = { id: generateId(), title: "", role: "", date: "", description: "" };
+                onChange({ ...resume, extracurricular: [newEx, ...(resume.extracurricular || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Activity
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.extracurricular || []).map((ex, idx) => (
+              <div key={ex.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Activity #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, extracurricular: resume.extracurricular.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={ex.title}
+                    onChange={(e) => {
+                      const copy = [...resume.extracurricular];
+                      copy[idx] = { ...copy[idx], title: e.target.value };
+                      onChange({ ...resume, extracurricular: copy });
+                    }}
+                    placeholder="Activity / Club Name"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={ex.role}
+                    onChange={(e) => {
+                      const copy = [...resume.extracurricular];
+                      copy[idx] = { ...copy[idx], role: e.target.value };
+                      onChange({ ...resume, extracurricular: copy });
+                    }}
+                    placeholder="Role"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+                <textarea
+                  rows={2}
+                  value={ex.description}
+                  onChange={(e) => {
+                    const copy = [...resume.extracurricular];
+                    copy[idx] = { ...copy[idx], description: e.target.value };
+                    onChange({ ...resume, extracurricular: copy });
+                  }}
+                  placeholder="Description"
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 15. AWARDS & HONORS */}
+      {(activeSection === "awards" || activeSection === "all") && (
+        <section id="sec-awards" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">Awards & Honors</h3>
+              <p className="text-xs text-muted-foreground">Academic dean's lists, company awards, and recognitions.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newAward: AwardItem = { id: generateId(), title: "", issuer: "", date: "", description: "" };
+                onChange({ ...resume, awards: [newAward, ...(resume.awards || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Award
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.awards || []).map((aw, idx) => (
+              <div key={aw.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Award #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, awards: resume.awards.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={aw.title}
+                    onChange={(e) => {
+                      const copy = [...resume.awards];
+                      copy[idx] = { ...copy[idx], title: e.target.value };
+                      onChange({ ...resume, awards: copy });
+                    }}
+                    placeholder="Award Title"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={aw.issuer}
+                    onChange={(e) => {
+                      const copy = [...resume.awards];
+                      copy[idx] = { ...copy[idx], issuer: e.target.value };
+                      onChange({ ...resume, awards: copy });
+                    }}
+                    placeholder="Issuer"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+                <textarea
+                  rows={2}
+                  value={aw.description}
+                  onChange={(e) => {
+                    const copy = [...resume.awards];
+                    copy[idx] = { ...copy[idx], description: e.target.value };
+                    onChange({ ...resume, awards: copy });
+                  }}
+                  placeholder="Details"
+                  className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 16. REFERENCES */}
+      {(activeSection === "references" || activeSection === "all") && (
+        <section id="sec-references" className="space-y-4 max-w-3xl">
+          <div className="flex justify-between items-center border-b border-border pb-2">
+            <div>
+              <h3 className="text-base font-medium text-foreground">References</h3>
+              <p className="text-xs text-muted-foreground">Mentors, professors, or previous managers.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const newRef: ReferenceItem = { id: generateId(), name: "", title: "", company: "", email: "", phone: "", relationship: "" };
+                onChange({ ...resume, references: [newRef, ...(resume.references || [])] });
+              }}
+              className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+            >
+              <Plus className="w-3.5 h-3.5" /> Add Reference
+            </button>
+          </div>
+          <div className="space-y-3">
+            {(resume.references || []).map((ref, idx) => (
+              <div key={ref.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-medium text-foreground">Reference #{idx + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...resume, references: resume.references.filter((_, i) => i !== idx) })}
+                    className="text-muted-foreground hover:text-destructive p-1 rounded"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <input
+                    type="text"
+                    value={ref.name}
+                    onChange={(e) => {
+                      const copy = [...resume.references];
+                      copy[idx] = { ...copy[idx], name: e.target.value };
+                      onChange({ ...resume, references: copy });
+                    }}
+                    placeholder="Full Name"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="text"
+                    value={ref.title}
+                    onChange={(e) => {
+                      const copy = [...resume.references];
+                      copy[idx] = { ...copy[idx], title: e.target.value };
+                      onChange({ ...resume, references: copy });
+                    }}
+                    placeholder="Title & Company"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="email"
+                    value={ref.email}
+                    onChange={(e) => {
+                      const copy = [...resume.references];
+                      copy[idx] = { ...copy[idx], email: e.target.value };
+                      onChange({ ...resume, references: copy });
+                    }}
+                    placeholder="Email"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                  <input
+                    type="tel"
+                    value={ref.phone}
+                    onChange={(e) => {
+                      const copy = [...resume.references];
+                      copy[idx] = { ...copy[idx], phone: e.target.value };
+                      onChange({ ...resume, references: copy });
+                    }}
+                    placeholder="Phone"
+                    className="text-xs h-9 px-3 rounded-lg border border-input bg-background"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 17. CUSTOM SECTIONS */}
+      {(resume.customSections || []).map((custom, cIdx) =>
+        activeSection === custom.id || activeSection === "all" ? (
+          <section key={custom.id} id={`sec-${custom.id}`} className="space-y-4 max-w-3xl">
+            <div className="flex justify-between items-center border-b border-border pb-2 gap-3">
+              <input
+                type="text"
+                value={custom.title}
+                onChange={(e) => {
+                  const copy = [...resume.customSections];
+                  copy[cIdx] = { ...copy[cIdx], title: e.target.value };
+                  onChange({ ...resume, customSections: copy });
+                }}
+                className="text-base font-medium text-foreground bg-transparent border-b border-transparent focus:border-primary outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const copy = [...resume.customSections];
+                  copy[cIdx] = {
+                    ...copy[cIdx],
+                    items: [...copy[cIdx].items, { id: generateId(), title: "", description: "" }],
+                  };
+                  onChange({ ...resume, customSections: copy });
+                }}
+                className="flex items-center gap-1 h-8 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Item
+              </button>
+            </div>
+            <div className="space-y-3">
+              {custom.items.map((item, iIdx) => (
+                <div key={item.id} className="p-4 rounded-xl border border-border bg-card space-y-2.5">
+                  <div className="flex justify-between items-center">
+                    <input
+                      type="text"
+                      value={item.title}
+                      onChange={(e) => {
+                        const copy = [...resume.customSections];
+                        const items = [...copy[cIdx].items];
+                        items[iIdx] = { ...items[iIdx], title: e.target.value };
+                        copy[cIdx] = { ...copy[cIdx], items };
+                        onChange({ ...resume, customSections: copy });
+                      }}
+                      placeholder="Item Title"
+                      className="flex-1 text-xs h-9 px-3 rounded-lg border border-input bg-background mr-2"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const copy = [...resume.customSections];
+                        copy[cIdx] = {
+                          ...copy[cIdx],
+                          items: copy[cIdx].items.filter((_, i) => i !== iIdx),
+                        };
+                        onChange({ ...resume, customSections: copy });
+                      }}
+                      className="text-muted-foreground hover:text-destructive p-1.5"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <textarea
+                    rows={2}
+                    value={item.description}
+                    onChange={(e) => {
+                      const copy = [...resume.customSections];
+                      const items = [...copy[cIdx].items];
+                      items[iIdx] = { ...items[iIdx], description: e.target.value };
+                      copy[cIdx] = { ...copy[cIdx], items };
+                      onChange({ ...resume, customSections: copy });
+                    }}
+                    placeholder="Description"
+                    className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : null
       )}
 
       {/* AI Assistant Modal Integration */}

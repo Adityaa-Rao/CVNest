@@ -28,6 +28,8 @@ function BuilderContent() {
   const router = useRouter();
   const mode = searchParams.get("mode");
   const resumeId = searchParams.get("id");
+  const templateParam = searchParams.get("template");
+  const sampleParam = searchParams.get("sample");
 
   const [resume, setResume] = useState<ResumeData | null>(null);
   const [activeSection, setActiveSection] = useState<string>("personalInfo");
@@ -41,16 +43,29 @@ function BuilderContent() {
     }
 
     if (!current) {
-      if (mode === "fresher") {
+      if (mode === "fresher" || sampleParam === "fresher") {
         current = JSON.parse(JSON.stringify(SAMPLE_FRESHER_RESUME));
+      } else if (sampleParam === "experienced") {
+        current = JSON.parse(JSON.stringify(SAMPLE_EXPERIENCED_RESUME));
       } else {
         const stored = getStoredResumes();
         current = stored.length > 0 ? stored[0] : JSON.parse(JSON.stringify(SAMPLE_FRESHER_RESUME));
       }
     }
 
+    if (current && templateParam) {
+      current = {
+        ...current,
+        style: {
+          ...current.style,
+          templateId: templateParam,
+        },
+      };
+      saveResume(current);
+    }
+
     setResume(current);
-  }, [mode, resumeId]);
+  }, [mode, resumeId, templateParam, sampleParam]);
 
   const handleUpdateResume = (updated: ResumeData) => {
     setResume(updated);
@@ -147,15 +162,11 @@ function BuilderContent() {
           {/* Quick ATS Jump */}
           <Link
             href={`/ats-checker?id=${resume.id}`}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary hover:bg-secondary/80 text-foreground transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary hover:bg-secondary/80 text-foreground transition-colors duration-150 tabular-nums"
             title="Inspect full ATS diagnostic breakdown"
           >
-            <span className="font-semibold">ATS Score:</span>
-            <span
-              className={`font-bold px-1.5 py-0.2 rounded text-[10px] ${
-                atsReport.score >= 80 ? "bg-emerald-500/10 text-emerald-600" : "bg-amber-500/10 text-amber-600"
-              }`}
-            >
+            <span className="font-medium text-muted-foreground">ATS</span>
+            <span className="font-mono text-[11px] font-medium text-foreground">
               {atsReport.score}/100
             </span>
           </Link>

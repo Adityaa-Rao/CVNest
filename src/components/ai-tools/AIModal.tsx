@@ -25,14 +25,14 @@ export const AIModal: React.FC<AIModalProps> = ({
   isFresher = false,
   onApply,
 }) => {
-  if (!isOpen) return null;
-
   const [loading, setLoading] = useState(false);
   const [tone, setTone] = useState<"professional" | "concise" | "confident" | "technical">("professional");
   const [targetRole, setTargetRole] = useState(initialRole);
   const [rawInput, setRawInput] = useState(initialText);
   const [results, setResults] = useState<string[]>([]);
   const [selectedResult, setSelectedResult] = useState<string | null>(null);
+
+  if (!isOpen) return null;
 
   const handleGenerate = async () => {
     setLoading(true);

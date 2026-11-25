@@ -63,9 +63,9 @@ export const LeftPanelSections: React.FC<LeftPanelSectionsProps> = ({
 
   return (
     <aside className="w-64 border-r border-border bg-card/50 flex flex-col h-full overflow-hidden flex-shrink-0 select-none">
-      <div className="p-3.5 border-b border-border bg-card">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-          Resume Sections
+      <div className="p-4 border-b border-border bg-card">
+        <h2 className="text-xs font-medium text-foreground">
+          Sections
         </h2>
         <p className="text-[11px] text-muted-foreground mt-0.5">
           Select to edit or toggle visibility

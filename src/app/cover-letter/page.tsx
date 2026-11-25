@@ -10,13 +10,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import {
   Sparkles,
-  Download,
   Save,
   Printer,
-  CheckCircle2,
-  FileText,
-  Building,
-  Briefcase,
 } from "lucide-react";
 
 function CoverLetterContent() {
@@ -117,86 +112,84 @@ function CoverLetterContent() {
       <Navbar />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5" /> AI Cover Letter Studio
-            </div>
-            <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-              Create Tailored, High-Impact Cover Letters
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-border pb-6">
+          <div className="space-y-1">
+            <span className="text-xs font-medium text-primary">Cover Letter Studio</span>
+            <h1 className="text-2xl md:text-3xl font-medium tracking-[-0.015em] text-foreground">
+              Cover letter builder
             </h1>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1 max-w-xl">
-              Sync credentials from your resume, match company requirements, and generate an articulate cover letter in seconds.
+            <p className="text-xs md:text-sm text-muted-foreground max-w-xl">
+              Pull skills from your active resume, adjust tone, and print or save your letter.
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-border bg-card text-xs font-semibold hover:bg-secondary"
+              className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-lg border border-border bg-card text-xs font-medium hover:bg-secondary transition-colors duration-150"
             >
-              <Printer className="w-4 h-4 text-muted-foreground" />
+              <Printer className="w-4 h-4 text-muted-foreground" strokeWidth={1.5} />
               <span>Print / PDF</span>
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-semibold hover:opacity-95 shadow-sm active:scale-98"
+              className="inline-flex items-center gap-1.5 h-9 px-4 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
             >
-              <Save className="w-4 h-4" />
-              <span>{saveSuccess ? "Saved!" : "Save Letter"}</span>
+              <Save className="w-4 h-4" strokeWidth={1.5} />
+              <span>{saveSuccess ? "Saved" : "Save letter"}</span>
             </button>
           </div>
         </div>
 
-        {/* 2-Column Studio: Form on Left, Live Document on Right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Controls Form (5 cols) */}
-          <div className="lg:col-span-5 rounded-2xl border border-border bg-card p-6 space-y-4 shadow-sm">
-            <h3 className="font-bold text-sm text-foreground">Job & Applicant Details</h3>
+          <div className="lg:col-span-5 rounded-xl border border-border bg-card p-6 space-y-4">
+            <h3 className="font-medium text-sm text-foreground">Role and applicant details</h3>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground mb-1">Company Name *</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Company name</label>
               <input
                 type="text"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                placeholder="e.g. Stripe or Google"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-input bg-background outline-none"
+                placeholder="Stripe"
+                className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground mb-1">Target Position *</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Target position</label>
               <input
                 type="text"
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
-                placeholder="e.g. Senior Frontend Engineer"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-input bg-background outline-none"
+                placeholder="Senior Frontend Engineer"
+                className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground mb-1">Applicant Name</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Applicant name</label>
               <input
                 type="text"
                 value={applicantName}
                 onChange={(e) => setApplicantName(e.target.value)}
-                className="w-full text-xs px-3 py-2 rounded-lg border border-input bg-background outline-none"
+                className="w-full h-9 text-xs px-3 rounded-lg border border-input bg-background outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground mb-1">Tone</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Tone</label>
               <div className="grid grid-cols-4 gap-1.5">
                 {(["professional", "confident", "enthusiastic", "concise"] as const).map((t) => (
                   <button
                     key={t}
                     type="button"
                     onClick={() => setTone(t)}
-                    className={`text-[11px] py-1.5 rounded-lg border capitalize ${
-                      tone === t ? "bg-primary text-primary-foreground font-semibold border-primary shadow-xs" : "border-border text-muted-foreground hover:bg-secondary"
+                    className={`text-xs h-8 rounded-lg border capitalize transition-colors duration-150 ${
+                      tone === t
+                        ? "bg-primary text-primary-foreground font-medium border-primary"
+                        : "border-border text-muted-foreground hover:text-foreground hover:bg-secondary"
                     }`}
                   >
                     {t}
@@ -206,12 +199,12 @@ function CoverLetterContent() {
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-foreground mb-1">Job Description Snippet</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Job description notes</label>
               <textarea
                 rows={3}
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste key responsibilities or values mentioned in the posting..."
+                placeholder="Paste key responsibilities or requirements"
                 className="w-full text-xs p-2.5 rounded-lg border border-input bg-background resize-none outline-none"
               />
             </div>
@@ -219,41 +212,38 @@ function CoverLetterContent() {
             <button
               onClick={handleGenerate}
               disabled={isGenerating}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-indigo-600 text-white font-semibold text-xs hover:bg-indigo-700 shadow-sm transition-all"
+              className="w-full flex items-center justify-center gap-2 h-9 rounded-lg bg-primary text-primary-foreground font-medium text-xs hover:opacity-95 active:scale-[0.98] transition-[transform,opacity] duration-150"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>{isGenerating ? "Writing Letter with AI..." : "Generate Cover Letter"}</span>
+              <Sparkles className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>{isGenerating ? "Drafting..." : "Generate draft"}</span>
             </button>
           </div>
 
           {/* Live Document Canvas (7 cols) */}
-          <div className="lg:col-span-7 bg-zinc-100 dark:bg-zinc-950/60 p-4 sm:p-8 rounded-2xl border border-border flex justify-center">
-            <div className="resume-paper w-[210mm] max-w-full min-h-[297mm] bg-white text-zinc-900 shadow-xl p-8 sm:p-12 font-sans text-xs space-y-6">
-              {/* Header */}
+          <div className="lg:col-span-7 bg-secondary/40 p-4 sm:p-8 rounded-xl border border-border flex justify-center">
+            <div className="resume-paper w-[210mm] max-w-full min-h-[297mm] bg-white text-zinc-900 shadow-[0_8px_24px_rgba(0,0,0,0.06)] p-8 sm:p-12 font-sans text-xs space-y-6">
               <div className="border-b border-zinc-200 pb-4 flex justify-between items-end">
                 <div>
-                  <h2 className="text-xl font-bold tracking-tight text-zinc-900">{applicantName || "Your Full Name"}</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-zinc-900">{applicantName || "Your Full Name"}</h2>
                   <p className="text-xs text-zinc-600 font-medium">{applicantTitle || "Professional Title"}</p>
                 </div>
-                <div className="text-right text-[11px] text-zinc-500">
+                <div className="text-right text-[11px] text-zinc-500 font-mono tabular-nums">
                   {new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                 </div>
               </div>
 
-              {/* Recipient */}
               <div className="text-xs text-zinc-700 space-y-0.5">
                 <div className="font-semibold text-zinc-900">Hiring Team</div>
-                <div>{companyName || "[Company Name]"}</div>
+                <div>{companyName || "Company Name"}</div>
                 {companyAddress && <div>{companyAddress}</div>}
               </div>
 
-              {/* Editable Content */}
               <div>
                 <textarea
                   rows={16}
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="Your generated cover letter will appear here, or you can write and edit directly..."
+                  placeholder="Your cover letter draft appears here, or you can write directly."
                   className="w-full text-xs text-zinc-800 leading-relaxed bg-transparent border-0 outline-none resize-none"
                 />
               </div>
@@ -269,7 +259,7 @@ function CoverLetterContent() {
 
 export default function CoverLetterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="text-xs text-muted-foreground">Loading Cover Letter Studio...</div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="text-xs text-muted-foreground">Loading cover letter studio...</div></div>}>
       <CoverLetterContent />
     </Suspense>
   );
